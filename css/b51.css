@@ -1,0 +1,97 @@
+﻿//95.08.24 add report_sbody for 動態報表 by 2295
+//95.11.09 add 動態報表配色 by 2295
+.mtext {
+	FONT-FAMILY: "新細明體"; FONT-SIZE: 16px
+}
+.stext {
+	FONT-FAMILY: "新細明體"; FONT-SIZE: 13px
+}
+.mbody {
+	FONT-FAMILY: "新細明體"; FONT-SIZE: 16px; LINE-HEIGHT: 150%
+}
+.sbody {
+	FONT-FAMILY: "新細明體"; FONT-SIZE: 13px; LINE-HEIGHT: 150%
+}
+.emtext {
+	FONT-FAMILY: times new roman, serif; FONT-SIZE: 16px
+}
+.estext {
+	FONT-FAMILY: "arial", "helvetica"; FONT-SIZE: 13px
+}
+.title {
+	FONT-FAMILY: "新細明體"; FONT-SIZE: 19px
+}
+.maf {
+	FONT-FAMILY: "新細明體"; FONT-SIZE: 12px; LINE-HEIGHT: 150%
+}
+A:hover {
+	COLOR: #CC6600; FONT-FAMILY: ""
+}
+A:active {
+	COLOR: #ff0000; FONT-FAMILY: ""
+}
+A:link {
+	COLOR: #0000bb; FONT-FAMILY: ""
+}
+A:visited {
+	COLOR: #7721a5; FONT-FAMILY: ""
+}
+.t4 {
+	FONT-FAMILY: "標楷體"; FONT-SIZE: 22px; LINE-HEIGHT: 18pt
+}
+
+.nameColor_sbody {
+	FONT-FAMILY: "新細明體"; FONT-SIZE: 13px; LINE-HEIGHT: 150%; text-align: left; background-color: #BDDE9C;
+}
+
+.nameColor_sbody_right {
+	FONT-FAMILY: "新細明體"; FONT-SIZE: 13px; LINE-HEIGHT: 150%; text-align: right; background-color: #BDDE9C
+}
+.nameColor_sbody_center {
+	FONT-FAMILY: "新細明體"; FONT-SIZE: 13px; LINE-HEIGHT: 150%; text-align: center; background-color: #BDDE9C
+}
+
+.textColor_sbody {
+	FONT-FAMILY: "新細明體"; FONT-SIZE: 13px; LINE-HEIGHT: 150%; text-align: left; background-color: #EBF4E1
+}
+.textColor_sbody_center {
+	FONT-FAMILY: "新細明體"; FONT-SIZE: 13px; LINE-HEIGHT: 150%; text-align: center; background-color: #EBF4E1
+}
+
+.listTitleColor_sbody {
+	FONT-FAMILY: "新細明體"; FONT-SIZE: 13px; LINE-HEIGHT: 150%; text-align: left; background-color: #BFDFAE
+}
+
+.list2Color_sbody {
+	FONT-FAMILY: "新細明體"; FONT-SIZE: 13px; LINE-HEIGHT: 150%; text-align: left; background-color: #EBF4E1
+}
+.list1Color_sbody {
+	FONT-FAMILY: "新細明體"; FONT-SIZE: 13px; LINE-HEIGHT: 150%; text-align: left; background-color: #FFFFCC
+}
+.list1Color_sbody_center {
+	FONT-FAMILY: "新細明體"; FONT-SIZE: 13px; LINE-HEIGHT: 150%; text-align: center; background-color: #FFFFCC
+}
+.report_sbody {
+	FONT-FAMILY: "新細明體"; FONT-SIZE: 13px; LINE-HEIGHT: 150% text-align: left; margin-top: 0 ;color="#000080"
+}
+
+.body_bgcolor{
+	background-color:#E9F4E3
+}  
+   
+.bt_bgcolor{
+    FONT-FAMILY: "新細明體"; FONT-SIZE: 13px; LINE-HEIGHT: 150%; background-color:#B0D595
+}   
+.chooseitem_bgcolor{
+    background-color:#B0D595
+} 
+.menu_bgcolor{
+    FONT-FAMILY: "新細明體"; FONT-SIZE: 13px; LINE-HEIGHT: 150%; background-color:#CDE6BF
+}    
+.title_font{
+   text-align:center; FONT-SIZE: 19px; color=#336600
+}    
+
+.bordercolor {  
+ border: 1px solid #5DA525; 
+} 

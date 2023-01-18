@@ -1,0 +1,30 @@
+﻿<!-- 100.09.28修正為查詢年季-->
+<!--查詢年季-->
+<tr class="sbody">
+  <td><img src="images/2_icon_01.gif" width="16" height="16" align="absmiddle"><span class="mtext">查詢年季 :</span> 						  						
+     <input type='text' name='S_YEAR' value="<%=S_YEAR%>" size='3' maxlength='3' onblur='CheckYear(this)'><font color='#000000'>年                             
+		<select id="hide1" name=S_MONTH>        						
+		<%
+			for (int j = 1; j <= 4; j++) {			
+			if (j < 4){%>        	
+			<option value=0<%=(j*3)%> <%if(String.valueOf(Integer.parseInt(S_MONTH)/3).equals(String.valueOf(j))) out.print("selected");%>>0<%=j%></option>        		
+			<%}else{%>
+			<option value=<%=(j*3)%> <%if(String.valueOf(Integer.parseInt(S_MONTH)/3).equals(String.valueOf(j))) out.print("selected");%>>0<%=j%></option>        		
+			<%}%>
+		<%}%>
+		</select><font color='#000000'>季</font>~
+	<input type='text' name='E_YEAR' value="<%=E_YEAR%>" size='3' maxlength='3' onblur='CheckYear(this)'><font color='#000000'>年	
+	<select id="hide1" name=E_MONTH>        						
+		<%
+			for (int j = 1; j <= 4; j++) {			
+			if (j < 4){%>        	
+			<option value=0<%=(j*3)%> <%if(String.valueOf(Integer.parseInt(E_MONTH)/3).equals(String.valueOf(j))) out.print("selected");%>>0<%=j%></option>        		
+			<%}else{%>
+			<option value=<%=(j*3)%> <%if(String.valueOf(Integer.parseInt(E_MONTH)/3).equals(String.valueOf(j))) out.print("selected");%>>0<%=j%></option>        		
+			<%}%>
+		<%}%>
+		</select><font color='#000000'>季</font>
+		<input type=hidden name=S_DATE value=''>
+		<input type=hidden name=E_DATE value=''>
+    </td>
+</tr>  

@@ -1,0 +1,12 @@
+﻿<%
+//108.03.12 報表輸出格式挑選 by 2295 
+%>
+
+<tr class="sbody">
+<td width="118" bgcolor="#BDDE9C" height="1">輸出格式</td>
+<td width="416" bgcolor="#EBF4E1" height="1">
+  <input name='printStyle' type='radio' value='xls' checked>Excel
+  <input name='printStyle' type='radio' value='ods' >ODS
+  <input name='printStyle' type='radio' value='pdf' >PDF
+</td>
+</tr>

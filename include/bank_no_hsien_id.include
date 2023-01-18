@@ -1,0 +1,55 @@
+﻿<%// 99.04.06 產生縣市別/總機構按年月資料 by 2295 %>
+<%//111.02.24 調整xml產生方式 by 2295%>
+<%
+	boolean showCancel_No=false;//顯示營運中/裁撤別
+	boolean showBankType=false;//顯示金融機構類別
+	boolean showCityType=false;//顯示縣市別
+	boolean showUnit=false;//顯示金額單位
+	boolean showPageSetting=true;//顯示報表列印格式
+	boolean setLandscape=false;//true:橫印
+	
+	//查詢年月(前一個月份)
+	String YEAR  = Utility.getYear();
+	String MONTH = Utility.getMonth();
+	String Unit = "1000";//金額單位.預設為仟元
+
+	DataObject bean = null;
+	List cityList = (List)request.getAttribute("City");
+	if(cityList!=null) {
+	    //111.02.24 調整xml的tag皆為小寫且為同一行    
+		// XML Ducument for 縣市別 begin
+	    out.println("<xml version=\"1.0\" encoding=\"UTF-8\" ID=\"CityXML\">");
+	    out.println("<datalist>");
+	    for(int i=0;i< cityList.size(); i++) {
+	        bean =(DataObject)cityList.get(i);
+	        out.print("<data>");
+	        out.print("<citytype>"+bean.getValue("hsien_id")+"</citytype>");
+	        out.print("<cityame>"+bean.getValue("hsien_name")+"</cityname>");
+	        out.print("<cityvalue>"+bean.getValue("hsien_id")+"</cityvalue>");
+	        out.print("<cityyear>"+bean.getValue("m_year").toString()+"</cityyear>");
+	        out.print("</data>");
+	    }
+	    out.println("</datalist>\n</xml>");
+	    // XML Ducument for 縣市別 end
+    }
+    List tBankList = (List)request.getAttribute("TBank");
+    if(tBankList!=null) {
+        //111.02.24 調整xml的tag皆為小寫且為同一行    
+	    // XML Ducument for 總機構代碼 begin
+	    out.println("<xml version=\"1.0\" encoding=\"UTF-8\" ID=\"TBankXML\">");
+	    out.println("<datalist>");
+	    for(int i=0;i< tBankList.size(); i++) {
+	        bean =(DataObject)tBankList.get(i);
+	        out.print("<data>");
+	        out.print("<banktype>"+bean.getValue("bank_type")+"</banktype>");
+	        out.print("<bntype>"+bean.getValue("bn_type")+"</bntype>");
+	        out.print("<bankyear>"+bean.getValue("m_year").toString()+"</bankyear>");
+	        out.print("<bankcity>"+bean.getValue("hsien_id")+"</bankcity>");
+	        out.print("<bankvalue>"+bean.getValue("bank_no")+"</bankvalue>");
+	        out.print("<bankname>"+bean.getValue("bank_no")+"  "+bean.getValue("bank_name")+"</bankname>");
+	        out.print("</data>");
+	    }
+	    out.println("</datalist>\n</xml>");
+	    // XML Ducument for 總機構代碼 end
+    }
+%>

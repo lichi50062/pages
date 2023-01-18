@@ -1,0 +1,180 @@
+<tr> 
+  <td><img src="images/space_1.gif" width="8" height="8"></td>
+</tr>
+<tr>          
+  <td><table width="750" border="1" align="center" cellpadding="0" cellspacing="0" class="bordercolor">
+      <tr> 
+        <td bordercolor="#E9F4E3" bgcolor="#E9F4E3">
+        <table width="750" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#E9F4E3">
+            <tr> 
+              <td class="bt_bgcolor"> 
+               <div align="right">
+                  <!--input type='radio' name="excelaction" value='view' <%if(szExcelAction.equals("view")){out.print("checked");}%> >檢視報表-->
+              	  <input type='radio' name="excelaction" value='download' <%if(szExcelAction.equals("download")){out.print("checked");}%> >下載報表
+              	  <%if(Utility.getPermission(request,report_no,"P")){//Print--有列印權限時 %> 
+              	  <a href="javascript:doSubmit('createRpt');" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image41','','images/bt_execb.gif',1)"><img src="images/bt_exec.gif" name="Image41" width="66" height="25" border="0" id="Image41"></a> 
+              	  <%}%>
+                  <a href="javascript:ResetAllData('BankList');" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image51','','images/bt_cancelb.gif',0)"><img src="images/bt_cancel.gif" name="Image51" width="66" height="25" border="0" id="Image51"></a> 
+                  <a href="#" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image61','','images/bt_reporthelpb.gif',1)"><img src="images/bt_reporthelp.gif" name="Image61" width="80" height="25" border="0" id="Image61"></a> 
+                </div>
+               </td>
+            </tr>
+            <tr> 
+              <td class="menu_bgcolor"> 
+                <table width="700" border="0" align="center" cellpadding="1" cellspacing="1" class="sbody">
+                  <tr class="sbody"> 
+                    <td width="100"><img src="images/2_icon_01.gif" width="16" height="16" align="absmiddle"> 
+                      <a href="#"><font color="#CC6600">1.金融機構</font></a></td>
+                    <td width="100"><a href="javascript:doSubmit('RptColumn')"><font color='black'>2.報表欄位</font></a></td>                            
+                    <td width="100"><a href="javascript:doSubmit('RptOrder')"><font color='black'>3.排序欄位</font></a></td>
+                    <td width="100"><a href="javascript:doSubmit('RptStyle')"><font color='black'>4.報表格式</font></a></td>
+                  </tr>
+                </table></td>
+            </tr>                    
+             
+            <tr> 
+              <td class="body_bgcolor"> 
+               <table width="750" border="0" align="center" cellpadding="0" cellspacing="0">
+                 
+            	 <!--查詢年月-->
+                 <tr class="sbody">
+                   <td><img src="images/2_icon_01.gif" width="16" height="16" align="absmiddle"><span class="mtext">查詢年月 :</span> 						  						
+                      <input type='text' name='S_YEAR' value="<%=S_YEAR%>" size='3' maxlength='3' onblur='CheckYear(this)' onchange="javascript:changeCity(document.BankListfrm.HSIEN_ID, document.BankListfrm.S_YEAR, document.BankListfrm);changeOption(document.BankListfrm,'change');"><font color='#000000'>年                             
+                 		<select id="hide1" name=S_MONTH>        						
+                 		<%for(int j = 1; j <= 12; j++) {
+                 			if (j < 10){%>        	
+                 				<option value=0<%=j%> <%if(String.valueOf(Integer.parseInt(S_MONTH)).equals(String.valueOf(j))) out.print("selected");%>>0<%=j%></option>        		
+                 			<%}else{%>
+                 				<option value=<%=j%> <%if(String.valueOf(Integer.parseInt(S_MONTH)).equals(String.valueOf(j))) out.print("selected");%>><%=j%></option>
+                 			<%}%>
+                 		<%}%>
+                 		</select><font color='#000000'><%out.print("月");%></font>
+                 </tr> 
+                 <!--農(漁)會別-->
+                 <tr class="sbody">
+                 	<td><img src="images/2_icon_01.gif" width="16" height="16" align="absmiddle"><span class="mtext">農(漁)會別 :</span>
+                     	<select size="1" name="bank_type" onchange="javascript:changeOption(document.BankListfrm,'change');"> 
+                     		<option value ='6' <%if((!bank_type.equals("")) && bank_type.equals("6")) out.print("selected");%>>農會</option>
+                     		<option value ='7' <%if((!bank_type.equals("")) && bank_type.equals("7")) out.print("selected");%>>漁會</option>
+                     		//95.11.10 登入者為A111111111 or 農金局時,才可顯示農漁會%>                              
+                     		<option value ='ALL' <%if((!bank_type.equals("")) && bank_type.equals("ALL")) out.print("selected");%>>農漁會</option>                              
+                     	
+                     </select>
+                 	</td>
+                 </tr>  
+                 
+                 <!-- 金額單位-->
+                 <tr class="sbody">
+                  <td><img src="images/2_icon_01.gif" width="16" height="16" align="absmiddle"><span class="mtext">金額單位 :</span>
+                    <select size="1" name="Unit">
+                      <option value ='1' <%if((!Unit.equals("")) && Unit.equals("1")) out.print("selected");%>>元</option>
+                      <option value ='1000' <%if((!Unit.equals("")) && Unit.equals("1000")) out.print("selected");%>>千元</option>
+                      <option value ='10000' <%if((!Unit.equals("")) && Unit.equals("10000")) out.print("selected");%>>萬元</option>
+                      <option value ='1000000' <%if((!Unit.equals("")) && Unit.equals("1000000")) out.print("selected");%>>百萬元</option>
+                      <option value ='10000000' <%if((!Unit.equals("")) && Unit.equals("10000000")) out.print("selected");%>>千萬元</option>
+                      <option value ='100000000' <%if((!Unit.equals("")) && Unit.equals("100000000")) out.print("selected");%>>億元</option>
+                    </select>
+                  </td>
+                 </tr>  
+                
+                 <!-- 1.營運中/裁撤別 2.縣市別-->  
+                 <tr class="sbody">
+                  <td><img src="images/2_icon_01.gif" width="16" height="16" align="absmiddle"><span class="mtext">營運中/裁撤別 :</span> 	 
+                   <select name='CANCEL_NO' onchange="javascript:changeOption(document.BankListfrm,'change');">
+                   	<option  value="N" <%if((!cancel_no.equals("")) && cancel_no.equals("N")) out.print("selected");%>>營運中</option>
+                   	<option  value="Y" <%if((!cancel_no.equals("")) && cancel_no.equals("Y")) out.print("selected");%>>已裁撤</option>
+                   </select>
+                  </td>
+                 </tr>
+                                           
+                 <tr class="sbody">                           
+                   <td><img src="images/2_icon_01.gif" width="16" height="16" align="absmiddle"><span class="mtext">縣市別 :</span>                                                            
+                      <select name="HSIEN_ID" onchange="javascript:changeOption(document.BankListfrm,'');"> 
+                      <option value="ALL">全部</option>                                                             
+                     </select>
+                   </td>
+                 </tr>
+                
+                 <!-- 輸出格式-->
+                 <tr class="sbody">
+                  <td><img src="images/2_icon_01.gif" width="16" height="16" align="absmiddle"><span class="mtext">輸出格式 :</span>
+                    <input name='printStyle' type='radio' value='xls' <%if(printStyle.equals("xls"))out.print("checked");%>>Excel
+                    <input name='printStyle' type='radio' value='ods' <%if(printStyle.equals("ods"))out.print("checked");%>>ODS
+                    <input name='printStyle' type='radio' value='pdf' <%if(printStyle.equals("pdf"))out.print("checked");%>>PDF        
+                  </td>
+                 </tr>     
+                </table>
+               </td>
+            </tr>
+           
+            <!-- 金融機構.可挑選項目-->
+            <tr class="sbody"> 
+              <td class="body_bgcolor"> <table width="750" border="0" align="center" cellpadding="1" cellspacing="1" class="body_bgcolor">
+                    <tr> 
+                    <td width="215">
+                    <table>
+                    <tr class="sbody"><td align="center" class="chooseitem_bgcolor">可選擇項目</td></tr>
+                    <tr><td>  
+                    <select multiple  size=10  name="BankListSrc" ondblclick="javascript:movesel(document.BankListfrm.BankListSrc,document.BankListfrm.BankListDst);fn_changeBankListSrc(document.BankListfrm);" style="width: 292; height: 160">							
+            		</select>
+            		</td></tr>
+            		</table>
+                    </td>
+                    <td width="52"><table width="40" border="0" align="center" cellpadding="3" cellspacing="3">
+                        <tr> 
+                          <td>
+                          <div align="center">                                 
+                          <a href="javascript:movesel(document.BankListfrm.BankListSrc,document.BankListfrm.BankListDst);fn_changeBankListSrc(document.BankListfrm);"><img src="images/arrow_right.gif" width="24" height="22" border="0"></a>
+                          </div>
+                          </td>
+                        </tr>
+                        <tr> 
+                          <td>
+                          <div align="center">                                  
+                          <a href="javascript:moveallsel(document.BankListfrm.BankListSrc,document.BankListfrm.BankListDst);"><img src="images/arrow_rightall.gif" width="24" height="22" border="0"></a>
+                          </div>
+                          </td>
+                        </tr>
+                        <tr> 
+                          <td>
+                          <div align="center">                                  
+                          <a href="javascript:movesel(document.BankListfrm.BankListDst,document.BankListfrm.BankListSrc);fn_changeBankListSrc(document.BankListfrm);""><img src="images/arrow_left.gif" width="24" height="22" border="0"></a>
+                          </div>
+                          </td>
+                        </tr>
+                        <tr> 
+                          <td height="22">
+                          <div align="center">                                  
+                          <a href="javascript:moveallsel(document.BankListfrm.BankListDst,document.BankListfrm.BankListSrc);"><img src="images/arrow_leftall.gif" width="24" height="22" border="0"></a>
+                          </div>
+                          </td>
+                        </tr>
+                      </table></td>
+                    <td width="340">
+                    <table>
+                    <tr class="sbody"><td align="center" class="chooseitem_bgcolor">已選擇項目</td></tr> 
+                    <tr><td>
+                    <select multiple size=10  name="BankListDst" ondblclick="javascript:movesel(document.BankListfrm.BankListDst,document.BankListfrm.BankListSrc);fn_changeBankListSrc(document.BankListfrm);"" style="width: 292; height: 160">							
+            		</select>
+            		</td></tr>
+            		</table>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr> 
+         	  <td class="body_bgcolor">
+          	    <table width="750" border="0" cellpadding="1" cellspacing="1">
+            	<tr>                           
+                  <td width="750" align=left><font color="red" size=2>註：『已選擇項目』清單選取之項目說明</font></td>                              
+            	</tr>                              
+                <tr>                           
+                  <td width="750" align=left><font color="red" size=2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(1)選取[各信用部]：按「<%=title %>」的報表內容列印</font></td>                              
+                </tr>                                                  
+                </table>
+              </td>
+            </tr>
+          </table></td>
+      </tr>              
+    </table></td>
+</tr>

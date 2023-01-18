@@ -1,0 +1,8 @@
+﻿<!-- 輸出格式-->
+<tr class="sbody">
+ <td><img src="images/2_icon_01.gif" width="16" height="16" align="absmiddle"><span class="mtext">輸出格式 :</span>
+   <input name='printStyle' type='radio' value='xls' <%if(printStyle.equals("xls"))out.print("checked");%>>Excel
+   <input name='printStyle' type='radio' value='ods' <%if(printStyle.equals("ods"))out.print("checked");%>>ODS
+   <input name='printStyle' type='radio' value='pdf' <%if(printStyle.equals("pdf"))out.print("checked");%>>PDF        
+ </td>
+</tr>       
