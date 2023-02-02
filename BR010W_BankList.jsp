@@ -1,6 +1,7 @@
 ﻿<%
 //101.06 create by 2968
 //108.05.31 add 報表格式轉換 by rock.tsai
+//111.02.01 fix 無法挑選縣市別/機構代碼
 %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.tradevan.util.DBManager" %>
@@ -30,6 +31,7 @@
 <%@include file="./include/BR_bank_no_hsien_id.include" %>
 
 <script language="javascript" src="js/Common.js"></script>
+<script language="javascript" src="js/jquery-3.5.1.min.js"></script>
 <!--script language="javascript" src="js/BR010W.js"></script-->
 <!--script language="javascript" src="js/BRUtil.js"></script-->
 <script language="javascript" src="js/DSUtil.js"></script>
@@ -72,6 +74,7 @@ function ResetAllData_BR(){
 <body leftmargin="0" topmargin="0">
 <form method=post action='#' name='BankListfrm'>
 <INPUT type="hidden" name=bank_type value=<%=bank_type%>>
+<INPUT type="hidden" name=agri_loan value="0"><!--//專案農貸註記-->
 <table width="750" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr> 
      <td>&nbsp;</td>
@@ -125,7 +128,7 @@ function ResetAllData_BR(){
                       <td bgcolor="#E9F4E3"> 
                         <table width="750" border="0" align="center" cellpadding="0" cellspacing="0">
                           					  						
-						 <input type='hidden' name='S_YEAR' value="<%=S_YEAR%>" size='3' maxlength='3' onblur='CheckYear(this)' onchange="javascript:changeCity('CityXML', this.document.forms[0].HSIEN_ID, this.document.forms[0].S_YEAR, this.document.forms[0]);changeOption(document.forms[0],'change');">                 
+						 <input type='hidden' name='S_YEAR' value="<%=S_YEAR%>" size='3' maxlength='3' onblur='CheckYear(this)' onchange="javascript:changeCity(this.document.forms[0].HSIEN_ID, this.document.forms[0].S_YEAR, this.document.forms[0]);changeOption(document.forms[0],'change');">
                           <%@include file="./include/DS_Cancel_No_Hsien_ID.include" %> <!-- 1.營運中/裁撤別 2.縣市別-->  
                         </table>
                       </td>
@@ -165,7 +168,7 @@ for (var i =0; i < a.length; i ++){
 
 setSelect(this.document.forms[0].HSIEN_ID,"<%=hsien_id%>");
 setSelect(this.document.forms[0].CANCEL_NO,"<%=cancel_no%>");
-changeCity('CityXML', this.document.forms[0].HSIEN_ID, this.document.forms[0].S_YEAR, this.document.forms[0]);
+changeCity(this.document.forms[0].HSIEN_ID, this.document.forms[0].S_YEAR, this.document.forms[0]);
 //changeOption(this.document.forms[0],'');
 function clearBankList(){
  <%

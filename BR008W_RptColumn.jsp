@@ -4,6 +4,7 @@
 //94.09.05 fix 拿掉檢視報表 by 2295
 //99.01.08 add 增加卸任與否 by 2295
 //99.12.29 add 報表欄位.可挑選項目套用共用include by 2295
+//111.02.01 fix 無法挑選縣市別/機構代碼
 %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.tradevan.util.DBManager" %>
@@ -66,7 +67,7 @@ function ResetAllData(){
 </head>
 
 <body leftmargin="0" topmargin="0">
-<form method=post action='#'>
+<form method=post action='#' name="RptColumnfrm">
 <table width="750" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr> 
      <td>&nbsp;</td>

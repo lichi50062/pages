@@ -4,6 +4,7 @@
 //94.03.24 add 區分營運中/已裁撤 by 2295
 //99.12.30 fix 根據查詢年度.100年以後取得新縣市別.100年以前取得舊縣市別 by 2295
 //108.05.31 add 報表格式轉換 by rock.tsai
+//112.02.01 fix 無法挑選縣市別 by 6820
 %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.tradevan.util.DBManager" %>
@@ -28,9 +29,10 @@
   String printStyle = (session.getAttribute("printStyle")==null)?"xls":(String)session.getAttribute("printStyle");//108.05.31 add
 %>
 <%@include file="./include/BR_bank_no_hsien_id.include" %>
-
+<script src="js/jquery-3.5.1.min.js"></script>
 <script language="javascript" src="js/Common.js"></script>
 <script language="javascript" event="onresize" for="window"></script>
+<script language="javascript" src="js/DSUtil.js"></script>
 <html>
 <head>
 <script language="JavaScript" type="text/JavaScript">
@@ -69,39 +71,39 @@ function doSubmit(cnd){
    this.document.forms[0].submit();   
 }
 
-function changeCity(xml, target, source, form) {
-      var myXML,nodeType,nodeValue, nodeName,nodeYear,m_year;      
-      m_year = source.value;
-      if(m_year >= 100){
-         m_year = 100;
-      }else{
-         m_year = 99;
-      }	
-      
-      target.length = 0;      
-      var oOption;
-     
-      myXML = document.all(xml).XMLDocument;
-      nodeType = myXML.getElementsByTagName("cityType");//hsien_id
-      nodeYear = myXML.getElementsByTagName("cityYear");//m_year
-	  nodeValue = myXML.getElementsByTagName("cityValue");//hsien_id
-	  nodeName = myXML.getElementsByTagName("cityName");//hsien_name
-		
-	  oOption = document.createElement("OPTION");
-	  oOption.text='全部';
-  	  oOption.value='ALL';
-  	  target.add(oOption);
-  	  
-	  for(var i=0;i<nodeType.length ;i++)	{	  	
-  	     if (nodeYear.item(i).firstChild.nodeValue == m_year)  {
-  		    oOption = document.createElement("OPTION");
-		    oOption.text=nodeName.item(i).firstChild.nodeValue;
-  		    oOption.value=nodeValue.item(i).firstChild.nodeValue;
-  		    target.add(oOption);
-   	     }
-      }
-      form.HSIEN_ID[0].selected=true;            
-}
+// function changeCity(xml, target, source, form) {   //112.02.01調整共用DSUtil.js
+//       var myXML,nodeType,nodeValue, nodeName,nodeYear,m_year;
+//       m_year = source.value;
+//       if(m_year >= 100){
+//          m_year = 100;
+//       }else{
+//          m_year = 99;
+//       }
+//
+//       target.length = 0;
+//       var oOption;
+//
+//       myXML = document.all(xml).XMLDocument;
+//       nodeType = myXML.getElementsByTagName("cityType");//hsien_id
+//       nodeYear = myXML.getElementsByTagName("cityYear");//m_year
+// 	  nodeValue = myXML.getElementsByTagName("cityValue");//hsien_id
+// 	  nodeName = myXML.getElementsByTagName("cityName");//hsien_name
+//
+// 	  oOption = document.createElement("OPTION");
+// 	  oOption.text='全部';
+//   	  oOption.value='ALL';
+//   	  target.add(oOption);
+//
+// 	  for(var i=0;i<nodeType.length ;i++)	{
+//   	     if (nodeYear.item(i).firstChild.nodeValue == m_year)  {
+//   		    oOption = document.createElement("OPTION");
+// 		    oOption.text=nodeName.item(i).firstChild.nodeValue;
+//   		    oOption.value=nodeValue.item(i).firstChild.nodeValue;
+//   		    target.add(oOption);
+//    	     }
+//       }
+//       form.HSIEN_ID[0].selected=true;
+// }
 
 function setSelect(S1, bankid) {
     if(S1 == null)
@@ -122,6 +124,7 @@ function setSelect(S1, bankid) {
 <body leftmargin="0" topmargin="0">
 <form method=post action='#'>
 <INPUT type="hidden" name=bank_type value=<%=bank_type%>>
+<INPUT type="hidden" name=agri_loan value="0"><!--//專案農貸註記-->
 <table width="600" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr> 
     <td>&nbsp;</td>
@@ -222,7 +225,7 @@ function setSelect(S1, bankid) {
 
 setSelect(this.document.forms[0].HSIEN_ID,"<%=hsien_id%>");
 setSelect(this.document.forms[0].CANCEL_NO,"<%=cancel_no%>");
-changeCity('CityXML', this.document.forms[0].HSIEN_ID, this.document.forms[0].S_YEAR, this.document.forms[0]);
+changeCity(this.document.forms[0].HSIEN_ID, this.document.forms[0].S_YEAR, this.document.forms[0]);
 -->
 </script>
 </body>

@@ -4,6 +4,7 @@
 // created by ABYSS Brenda
 // 99.06.08 fixed 縣市合併調整 by 2808
 //108.05.28 add 報表格式挑選 by rock.tsai
+//112.02.01 fix可選擇項目,dbclick無法移至已選擇項目 by 6820
 %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.Calendar" %>
@@ -45,79 +46,110 @@
 	    // XML Ducument for 縣市別 end
     }
 %>
+<script src="../js/jquery-3.5.1.min.js"></script>
 <script language="javascript" src="../js/Common.js"></script>
 <script language="javascript" src="../js/AN000W.js"></script>
 <script language="javascript" event="onresize" for="window"></script>
 <link href="/pages/css/b51.css" rel="stylesheet" type="text/css">
 <html>
 <head>
-<script language="JavaScript" type="text/JavaScript">
-<!--
-function doSubmit(){ 
-	if(document.form.bankType.value == ""){
-		alert("請選擇農(漁)會別");
-		document.form.bankType.focus();
-		return;
-	}
-	
-	if(document.form.cityType.value == ""){
-		alert("請選擇縣市別");
-		document.form.cityType.focus();
-		return;
-	}
-	
-	if (!confirm("本項報表會執行 20-30 秒，是否確定執行？")){return;}
-	this.document.forms[0].action = "/pages/report/AN012W.jsp?act=Excel";
-	this.document.forms[0].submit();   
-}
-//組縣市別============
-function changeCity(xml) {
-	var citySeld = form.cityType.value; //已選擇的
-	var myXML,nodeValue, nodeName,nodeYear;
-	//1.取得畫面年分 
-	var begY = form.S_YEAR.value=='' ? 0 : eval(form.S_YEAR.value) ;
-	Myear = '100' ;//預設年分100年
-	if(begY<=99) {
-		Myear = '99' ;
-	}
-	//2.讀cityXml
-	myXML = document.all(xml).XMLDocument;
-	nodeValue = myXML.getElementsByTagName("cityValue");
-	nodeName = myXML.getElementsByTagName("cityName");
-	nodeYear = myXML.getElementsByTagName("cityYear");
-	//3.移除已搬入的資料
-	var target = document.getElementById("cityType");
-	target.length = 0;
-	
-	var oOption = document.createElement("OPTION");
-	oOption.text="全部";
-	oOption.value="";
-	target.add(oOption);
-	
-	//4.判斷縣市年分組選單
-	for(var i=0;i<nodeName.length ;i++)	{
-		if(nodeYear.item(i).firstChild.nodeValue==Myear) {
-			oOption = document.createElement("OPTION");
-       	 	oOption.text=nodeName.item(i).firstChild.nodeValue;
-	        oOption.value=nodeValue.item(i).firstChild.nodeValue;  
-	        target.add(oOption);
-		}
-	}
-	setSelect(form.cityType,citySeld);
-}
-function setSelect(S1, bankid) {
-    if(S1 == null)
-    	return;
-    for(i=0;i<S1.length;i++) {
-      	if(S1.options[i].value==bankid)    	{
-        	S1.options[i].selected=true;
-        	break;
-    	}
-    }
-}
-//-->
-</script>
-<link href="css/b51.css" rel="stylesheet" type="text/css">
+    <script language="JavaScript" type="text/JavaScript">
+        <!--
+        function doSubmit() {
+            if (document.form.bankType.value == "") {
+                alert("請選擇農(漁)會別");
+                document.form.bankType.focus();
+                return;
+            }
+            if (document.form.cityType.value == "") {
+                alert("請選擇縣市別");
+                document.form.cityType.focus();
+                return;
+            }
+
+            if (!confirm("本項報表會執行 20-30 秒，是否確定執行？")) {
+                return;
+            }
+            this.document.forms[0].action = "/pages/report/AN012W.jsp?act=Excel";
+            this.document.forms[0].submit();
+        }
+
+        //組縣市別============
+        function changeCity(xml,year) {
+            var form = document.form;
+            var citySeld = form.cityType.value; //已選擇的
+            /*111.04.19
+            var myXML,nodeValue, nodeName,nodeYear;
+            //1.取得畫面年分
+            //var begY = year.value=='' ? 0 : eval(year.value) ;
+            */
+            Myear = '100' ;//預設年分100年
+            //if(begY<=99) {
+            //Myear = '99' ;
+            //}
+            //2.讀cityXml
+            /*111.04.19
+            myXML = document.all(xml).XMLDocument;
+            nodeValue = myXML.getElementsByTagName("cityValue");
+            nodeName = myXML.getElementsByTagName("cityName");
+            nodeYear = myXML.getElementsByTagName("cityYear");
+            //3.移除已搬入的資料
+            var target = document.getElementById("cityType");
+            target.length = 0;
+
+            var oOption = document.createElement("OPTION");
+            oOption.text="全部";
+            oOption.value="";
+            target.add(oOption);
+
+            //4.判斷縣市年分組選單
+            for(var i=0;i<nodeName.length ;i++)	{
+                if(nodeYear.item(i).firstChild.nodeValue==Myear) {
+                    oOption = document.createElement("OPTION");
+                        oOption.text=nodeName.item(i).firstChild.nodeValue;
+                    oOption.value=nodeValue.item(i).firstChild.nodeValue;
+                    target.add(oOption);
+                }
+            }
+            */
+            var xmlDoc = $.parseXML($("xml[id=CityXML]").html()) ;
+            var data = $(xmlDoc).find("data") ;
+            var oOption;
+            //3.移除已搬入的資料
+            document.form.cityType.length = 0;
+            var oOption = document.createElement("OPTION");
+            oOption.text="全部";
+            oOption.value="";
+            document.form.cityType.add(oOption);
+
+            //4.判斷縣市年分組選單
+            $(data).each(function (i) {
+                if ($(this).find("cityyear").text() == Myear)  {
+                    oOption = document.createElement("OPTION");
+                    oOption.text= $(this).find("cityname").text();
+                    oOption.value=$(this).find("cityvalue").text();
+                    document.form.cityType.add(oOption);
+                }
+
+            })
+            ;
+
+            setSelect(form.cityType,citySeld);
+        }
+
+        function setSelect(S1, bankid) {
+            if (S1 == null)
+                return;
+            for (i = 0; i < S1.length; i++) {
+                if (S1.options[i].value == bankid) {
+                    S1.options[i].selected = true;
+                    break;
+                }
+            }
+        }
+
+        //-->
+    </script>
 </head>
 
 <body leftmargin="0" topmargin="0">
@@ -213,9 +245,7 @@ function setSelect(S1, bankid) {
 </table>
 </form>
 </body>
-<script language="JavaScript" >
-<!--
-changeCity("CityXML") ;
--->
+<script language="JavaScript">
+changeCity("CityXML",'');
 </script>
 </html>

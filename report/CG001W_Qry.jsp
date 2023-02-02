@@ -4,6 +4,7 @@
 //created by ABYSS Brenda
 //104.10.07 add rs.close by 2295
 //108.05.15 add 報表格式挑選 by 2295
+//111.02.01 fix 可選擇項目,dbclick無法移至已選擇項目
 %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.Calendar" %>
@@ -369,7 +370,7 @@
 																</tr>
 																<tr> 
 																	<td width="195">  
-																		<select multiple  size=10  name="BankListSrc" ondblclick="javascript:movesel(this.document.forms[0].BankListSrc,this.document.forms[0].BankListDst2);" style="width: 300">
+																		<select multiple  size=10  name="BankListSrc" ondblclick="javascript:movesel(document.BankListfrm.BankListSrc,document.BankListfrm.BankListDst2);" style="width: 300">
 <%
 																			int itemIndex=0;
 																			if(reportGroup.equals("A"))

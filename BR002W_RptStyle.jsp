@@ -4,6 +4,7 @@
 // 99.12.23 add 範本格式套用共用include by 2295
 // 101.06   add 報表欄位 by 2968
 //103.01.21 add BOAF/MIS共用畫面 by 2295
+//112.02.01 fix 無法挑選縣市別/機構代碼 by 6820
 %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.tradevan.util.DBManager" %>
@@ -26,7 +27,7 @@
 %>
 
 
-
+<script language="javascript" src="js/jquery-3.5.1.min.js"></script>
 <script language="javascript" src="js/Common.js"></script>
 <!--script language="javascript" src="js/BR002W.js"></script-->
 <!--script language="javascript" src="js/BRUtil.js"></script-->

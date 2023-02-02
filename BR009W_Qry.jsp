@@ -3,6 +3,7 @@
 //99.12.14 fix SQLInjection by 2479
 //99.12.30 fix 根據查詢年度.100年以後取得新縣市別.100年以前取得舊縣市別 by 2295
 //         fix 查詢年月/可選擇項目 套用共用include by 2295
+//111.02.01 fix 無法挑選縣市別/機構代碼
 %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.tradevan.util.DBManager" %>
@@ -32,6 +33,7 @@
 <%@include file="./include/BR_bank_no_hsien_id.include" %>
 
 <script language="javascript" src="js/Common.js"></script>
+<script language="javascript" src="js/jquery-3.5.1.min.js"></script>
 <!--script language="javascript" src="js/BR009W.js"></script-->
 <!--script language="javascript" src="js/BRUtil.js"></script-->
 <script language="javascript" src="js/DSUtil.js"></script>
@@ -63,6 +65,7 @@ function doSubmit(report_no,cnd){
 <form method=post action='#' name='BankListfrm'>
 <INPUT type="hidden" name=bank_type value=<%=bank_type%>>
 <INPUT type="hidden" name=CANCEL_NO value="N">
+<INPUT type="hidden" name=agri_loan value="0"><!--//專案農貸註記-->
 <table width="750" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr> 
      <td>&nbsp;</td>
@@ -150,7 +153,7 @@ for (var i =0; i < a.length; i ++){
 <%}%>
 
 setSelect(this.document.forms[0].HSIEN_ID,"<%=hsien_id%>");
-changeCity('CityXML', this.document.forms[0].HSIEN_ID, this.document.forms[0].S_YEAR, this.document.forms[0]);
+changeCity(this.document.forms[0].HSIEN_ID, this.document.forms[0].S_YEAR, this.document.forms[0]);
 
 //changeOption(this.document.forms[0],'');
 function clearBankList(){

@@ -1,5 +1,6 @@
 ﻿<%
 //101.06 created by 2968
+//111.02.01 fix 無法挑選縣市別/機構代碼
 %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.tradevan.util.DBManager" %>
@@ -58,7 +59,7 @@
 </head>
 
 <body leftmargin="0" topmargin="0">
-<form method=post action='#'>
+<form method=post action='#' name="RptColumnfrm">
 <table width="750" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr> 
      <td>&nbsp;</td>

@@ -7,6 +7,7 @@
 //99.12.27 fix 根據查詢年度.100年以後取得新縣市別.100年以前取得舊縣市別 by 2295
 //         fix 查詢年月/可選擇項目 套用共用include by 2295
 //108.05.31 add 報表格式轉換 by rock.tsai
+//112.02.01 fix 無法挑選縣市別/機構代碼 by 6820
 %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.tradevan.util.DBManager" %>
@@ -36,6 +37,7 @@
 <%@include file="./include/BR_bank_no_hsien_id.include" %>
 
 <script language="javascript" src="js/Common.js"></script>
+<script language="javascript" src="js/jquery-3.5.1.min.js"></script>
 <!--script language="javascript" src="js/BR006W.js"></script-->
 <!--script language="javascript" src="js/BRUtil.js"></script-->
 <script language="javascript" src="js/DSUtil.js"></script>
@@ -68,6 +70,7 @@ function doSubmit(report_no,cnd){
 <body leftmargin="0" topmargin="0">
 <form method=post action='#' name='BankListfrm'>
 <INPUT type="hidden" name=bank_type value=<%=bank_type%>>
+<INPUT type="hidden" name=agri_loan value="0"><!--//專案農貸註記-->
 <table width="750" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr> 
      <td>&nbsp;</td>
@@ -123,7 +126,7 @@ function doSubmit(report_no,cnd){
                         <table width="750" border="0" align="center" cellpadding="0" cellspacing="0">
                           <tr class="sbody">
                             <td><img src="images/2_icon_01.gif" width="16" height="16" align="absmiddle"><span class="mtext">查詢年月 :</span> 						  						
-                               <input type='text' name='S_YEAR' value="<%=S_YEAR%>" size='3' maxlength='3' onblur='CheckYear(this)' onchange="javascript:changeCity('CityXML', this.document.forms[0].HSIEN_ID, this.document.forms[0].S_YEAR, this.document.forms[0]);changeOption(document.forms[0],'change');"><font color='#000000'>年                             
+                               <input type='text' name='S_YEAR' value="<%=S_YEAR%>" size='3' maxlength='3' onblur='CheckYear(this)' onchange="javascript:changeCity(this.document.forms[0].HSIEN_ID, this.document.forms[0].S_YEAR, this.document.forms[0]);changeOption(document.forms[0],'change');"><font color='#000000'>年
                           		<select id="hide1" name=S_MONTH>        						
                           		<%
                           			for (int j = 1; j <= 12; j++) {			
@@ -175,7 +178,7 @@ for (var i =0; i < a.length; i ++){
 
 setSelect(this.document.forms[0].HSIEN_ID,"<%=hsien_id%>");
 setSelect(this.document.forms[0].CANCEL_NO,"<%=cancel_no%>");
-changeCity('CityXML', this.document.forms[0].HSIEN_ID, this.document.forms[0].S_YEAR, this.document.forms[0]);
+changeCity(this.document.forms[0].HSIEN_ID, this.document.forms[0].S_YEAR, this.document.forms[0]);
 //changeOption(this.document.forms[0],'');
 function clearBankList(){
  <%

@@ -1,5 +1,6 @@
 ﻿<%
 //109.06.18 create 信用部電子銀行基本資料表 by 2295
+//111.02.01 fix 無法挑選縣市別/機構代碼
 %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.tradevan.util.DBManager" %>
@@ -53,7 +54,7 @@
 %>
 
 <%@include file="./include/BR_bank_no_hsien_id.include" %>
-
+<script language="javascript" src="js/jquery-3.5.1.min.js"></script>
 <script language="javascript" src="js/Common.js"></script>
 <script language="javascript" src="js/DSUtil.js"></script>
 <script language="javascript" src="js/movesels.js"></script>
@@ -125,6 +126,7 @@ function ResetAllData(){
 
 <body leftmargin="0" topmargin="0">
 <form method=post action='#' name='BankListfrm'>
+<INPUT type="hidden" name=agri_loan value="0"><!--//專案農貸註記-->
 <table width="750" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr> 
      <td>&nbsp;</td>
@@ -226,7 +228,7 @@ for (var i =0; i < a.length; i ++){
 setSelect(this.document.forms[0].HSIEN_ID,"<%=hsien_id%>");
 setSelect(this.document.forms[0].CANCEL_NO,"<%=cancel_no%>");
 changeOption(this.document.forms[0],'');
-changeCity('CityXML', this.document.forms[0].HSIEN_ID, this.document.forms[0].S_YEAR, this.document.forms[0]);
+changeCity(this.document.forms[0].HSIEN_ID, this.document.forms[0].S_YEAR, this.document.forms[0]);
 /*95.12.07 add
 function clearBankList(){
  <%

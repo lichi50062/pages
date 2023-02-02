@@ -6,6 +6,7 @@
 //99.12.14 fix SQLInjection by 2479
 //99.12.31 fix 根據查詢年度.100年以後取得新縣市別.100年以前取得舊縣市別 by 2295
 //108.05.31 add 報表格式轉換 by rock.tsai
+//112.02.01 fix 無法挑選縣市別/機構代碼 by 6820
 %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.tradevan.util.DBManager" %>
@@ -85,7 +86,7 @@
 %>
 
 
-
+<script src="js/jquery-3.5.1.min.js"></script>
 <script language="javascript" src="js/Common.js"></script>
 <script language="javascript" src="js/BR021W.js"></script>
 <script language="javascript" src="js/BRUtil.js"></script>
@@ -125,26 +126,26 @@ function MM_jumpMenu(targ,selObj,restore){ //v3.0
 
 function doSubmit(cnd){
    if(cnd == 'createRpt'){      
-      if(this.document.forms[0].BankListDst.length == 0){      	 
+      if(document.BankListfrm.BankListDst.length == 0){      	 
       	 alert('金融機構代碼必須選擇');
       	 return;
       }
-      if(this.document.forms[0].btnFieldList.value == ''){
+      if(document.BankListfrm.btnFieldList.value == ''){
          alert('報表欄位必須選擇');
          return;
       }
    }   
    
-   MoveSelectToBtn(this.document.forms[0].BankList, this.document.forms[0].BankListDst);	
-   fn_ShowPanel(cnd);      
+   MoveSelectToBtn(document.BankListfrm.BankList, document.BankListfrm.BankListDst);	
+   fn_ShowPanel(cnd);
 }
 
 function ResetAllData(){
     if(confirm("確定要清除已選定的資料嗎？")){  	
-        this.document.forms[0].BankListDst.length = 0;
-        this.document.forms[0].HSIEN_ID[0].selected=true;	   
-        changeOption(this.document.forms[0],'');
-        clearBankList();
+        document.BankListfrm.BankListDst.length = 0;
+        document.BankListfrm.HSIEN_ID[0].selected=true;	   
+        changeOption(document.BankListfrm,'');
+        // clearBankList();
 	}
 	return;	
 }
@@ -155,6 +156,7 @@ function ResetAllData(){
 
 <body leftmargin="0" topmargin="0">
 <form method=post action='#' name='BankListfrm'>
+<%--<INPUT type="hidden" name=agri_loan value="0"><!--//專案農貸註記-->--%>
 <table width="750" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr> 
      <td>&nbsp;</td>
@@ -209,10 +211,10 @@ function ResetAllData(){
                       <td bgcolor="#E9F4E3"> <table width="750" border="0" align="center" cellpadding="0" cellspacing="0">
                           <!--查詢年月-->
                           <tr class="sbody">
-                            <td><img src="images/2_icon_01.gif" width="16" height="16" align="absmiddle"><span class="mtext">查詢年月 :</span> 						  						
-                               <input type='text' name='S_YEAR' value="<%=S_YEAR%>" size='3' maxlength='3' onblur='CheckYear(this)' onchange="javascript:changeCity('CityXML', this.document.forms[0].HSIEN_ID, this.document.forms[0].S_YEAR, this.document.forms[0]);changeOption(document.forms[0],'change');"><font color='#000000'>年                             
-                          		<select id="hide1" name=S_MONTH>        						
-                          		<%
+                              <td><img src="images/2_icon_01.gif" width="16" height="16" align="absmiddle"><span class="mtext">查詢年月 :</span>
+                                  <input type='text' name='S_YEAR' value="<%=S_YEAR%>" size='3' maxlength='3' onblur='CheckYear(this)' onchange="javascript:changeCity(document.BankListfrm.HSIEN_ID, document.BankListfrm.S_YEAR, document.BankListfrm);changeOption(document.BankListfrm,'change');"><font color='#000000'>年
+                                      <select id="hide1" name=S_MONTH>
+                                      <%
                           			for (int j = 1; j <= 12; j++) {			
                           			if (j < 10){%>        	
                           			<option value=0<%=j%> <%if(String.valueOf(Integer.parseInt(S_MONTH)).equals(String.valueOf(j))) out.print("selected");%>>0<%=j%></option>        		
@@ -239,8 +241,8 @@ function ResetAllData(){
                           List hsien_id_data = DBManager.QueryDB_SQLParam("select distinct hsien_id,hsien_name from cd01",null,""); 
                           %>
                             <td><img src="images/2_icon_01.gif" width="16" height="16" align="absmiddle"><span class="mtext">縣市別 :</span>                                
-                               <select name="HSIEN_ID" onchange="javascript:changeOption(document.forms[0],'');">                               
-                                <option value="ALL">全部</option>
+                               <select name="HSIEN_ID" onchange="javascript:changeOption(document.forms[0],'change');">
+                               <option value="ALL">全部</option>
                                 <%for(int i=0;i<hsien_id_data.size();i++){%>                                
                                 <option value="<%=(String)((DataObject)hsien_id_data.get(i)).getValue("hsien_id")%>"
                                 <%if(((String)((DataObject)hsien_id_data.get(i)).getValue("hsien_id")).equals(hsien_id)) out.print("selected");%>
@@ -256,41 +258,41 @@ function ResetAllData(){
                       <td bgcolor="#E9F4E3"> <table width="750" border="0" align="center" cellpadding="1" cellspacing="1" bgcolor="#E9F4E3">
                           <tr> 
                             <td width="195">  
-                            <select multiple  size=10  name="BankListSrc" ondblclick="javascript:movesel(this.document.forms[0].BankListSrc,this.document.forms[0].BankListDst);" style="width: 17em">							
+                            <select multiple  size=10  name="BankListSrc" ondblclick="javascript:movesel(document.BankListfrm.BankListSrc,document.BankListfrm.BankListDst);" style="width: 17em">							
 							</select>
                             </td>
                             <td width="52"><table width="40" border="0" align="center" cellpadding="3" cellspacing="3">
                                 <tr> 
                                   <td>
                                   <div align="center">                                 
-                                  <a href="javascript:movesel(this.document.forms[0].BankListSrc,this.document.forms[0].BankListDst);"><img src="images/arrow_right.gif" width="24" height="22" border="0"></a>
+                                  <a href="javascript:movesel(document.BankListfrm.BankListSrc,document.BankListfrm.BankListDst);"><img src="images/arrow_right.gif" width="24" height="22" border="0"></a>
                                   </div>
                                   </td>
                                 </tr>
                                 <tr> 
                                   <td>
                                   <div align="center">                                  
-                                  <a href="javascript:moveallsel(this.document.forms[0].BankListSrc,this.document.forms[0].BankListDst);"><img src="images/arrow_rightall.gif" width="24" height="22" border="0"></a>
+                                  <a href="javascript:moveallsel(document.BankListfrm.BankListSrc,document.BankListfrm.BankListDst);"><img src="images/arrow_rightall.gif" width="24" height="22" border="0"></a>
                                   </div>
                                   </td>
                                 </tr>
                                 <tr> 
                                   <td>
                                   <div align="center">                                  
-                                  <a href="javascript:movesel(this.document.forms[0].BankListDst,this.document.forms[0].BankListSrc);"><img src="images/arrow_left.gif" width="24" height="22" border="0"></a>
+                                  <a href="javascript:movesel(document.BankListfrm.BankListDst,document.BankListfrm.BankListSrc);"><img src="images/arrow_left.gif" width="24" height="22" border="0"></a>
                                   </div>
                                   </td>
                                 </tr>
                                 <tr> 
                                   <td height="22">
                                   <div align="center">                                  
-                                  <a href="javascript:moveallsel(this.document.forms[0].BankListDst,this.document.forms[0].BankListSrc);"><img src="images/arrow_leftall.gif" width="24" height="22" border="0"></a>
+                                  <a href="javascript:moveallsel(document.BankListfrm.BankListDst,document.BankListfrm.BankListSrc);"><img src="images/arrow_leftall.gif" width="24" height="22" border="0"></a>
                                   </div>
                                   </td>
                                 </tr>
                               </table></td>
                             <td width="189"> 
-                           <select multiple size=10  name="BankListDst" ondblclick="javascript:movesel(this.document.forms[0].BankListDst,this.document.forms[0].BankListSrc);" style="width: 17em">							
+                           <select multiple size=10  name="BankListDst" ondblclick="javascript:movesel(document.BankListfrm.BankListDst,document.BankListfrm.BankListSrc);" style="width: 17em">							
 							</select>
                           </tr>
                         </table></td>
@@ -325,14 +327,16 @@ for (var i =0; i < a.length; i ++){
 }
 <%}%>
 
-setSelect(this.document.forms[0].HSIEN_ID,"<%=hsien_id%>");
-setSelect(this.document.forms[0].CANCEL_NO,"<%=cancel_no%>");
-changeOption(this.document.forms[0],'');
+setSelect(document.BankListfrm.HSIEN_ID,"<%=hsien_id%>");
+setSelect(document.BankListfrm.CANCEL_NO,"<%=cancel_no%>");
+//changeOption(this.document.forms[0],'');
+changeCity(document.BankListfrm.HSIEN_ID, document.BankListfrm.S_YEAR, document.BankListfrm);
+/*95.12.07
 function clearBankList(){
  <%
 	session.setAttribute("BankList",null);//清除已勾選的BankList
  %>
-}
+}*/
 -->
 </script>
 
