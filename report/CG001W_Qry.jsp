@@ -414,7 +414,7 @@
 																		</table>
 																	</td>
 																	<td width="189"> 
-																		<select multiple size=10  name="BankListDst2" ondblclick="javascript:movesel(this.document.forms[0].BankListDst,this.document.forms[0].BankListSrc);" style="width: 300">							
+																		<select multiple size=10  name="BankListDst2" ondblclick="javascript:movesel(document.BankListfrm.BankListDst2,document.BankListfrm.BankListSrc);" style="width: 300">
 																			
 																		</select>
 																		<input type="hidden" name="BankListDst">
