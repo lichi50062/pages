@@ -71,40 +71,6 @@ function doSubmit(cnd){
    this.document.forms[0].submit();   
 }
 
-// function changeCity(xml, target, source, form) {   //112.02.01調整共用DSUtil.js
-//       var myXML,nodeType,nodeValue, nodeName,nodeYear,m_year;
-//       m_year = source.value;
-//       if(m_year >= 100){
-//          m_year = 100;
-//       }else{
-//          m_year = 99;
-//       }
-//
-//       target.length = 0;
-//       var oOption;
-//
-//       myXML = document.all(xml).XMLDocument;
-//       nodeType = myXML.getElementsByTagName("cityType");//hsien_id
-//       nodeYear = myXML.getElementsByTagName("cityYear");//m_year
-// 	  nodeValue = myXML.getElementsByTagName("cityValue");//hsien_id
-// 	  nodeName = myXML.getElementsByTagName("cityName");//hsien_name
-//
-// 	  oOption = document.createElement("OPTION");
-// 	  oOption.text='全部';
-//   	  oOption.value='ALL';
-//   	  target.add(oOption);
-//
-// 	  for(var i=0;i<nodeType.length ;i++)	{
-//   	     if (nodeYear.item(i).firstChild.nodeValue == m_year)  {
-//   		    oOption = document.createElement("OPTION");
-// 		    oOption.text=nodeName.item(i).firstChild.nodeValue;
-//   		    oOption.value=nodeValue.item(i).firstChild.nodeValue;
-//   		    target.add(oOption);
-//    	     }
-//       }
-//       form.HSIEN_ID[0].selected=true;
-// }
-
 function setSelect(S1, bankid) {
     if(S1 == null)
     	return;
@@ -122,7 +88,7 @@ function setSelect(S1, bankid) {
 </head>
 
 <body leftmargin="0" topmargin="0">
-<form method=post action='#'>
+<form method=post action='#' name='BankListfrm'>
 <INPUT type="hidden" name=bank_type value=<%=bank_type%>>
 <INPUT type="hidden" name=agri_loan value="0"><!--//專案農貸註記-->
 <table width="600" border="0" align="center" cellpadding="0" cellspacing="0">
@@ -165,7 +131,7 @@ function setSelect(S1, bankid) {
                    <!--查詢年月-->
                    <tr class="sbody">
                      <td><img src="images/2_icon_01.gif" width="16" height="16" align="absmiddle"><span class="mtext">查詢年月 :</span> 						  						
-                        <input type='text' name='S_YEAR' value="<%=S_YEAR%>" size='3' maxlength='3' onblur='CheckYear(this)' onchange="javascript:changeCity('CityXML', this.document.forms[0].HSIEN_ID, this.document.forms[0].S_YEAR, this.document.forms[0]);"><font color='#000000'>年                             
+                        <input type='text' name='S_YEAR' value="<%=S_YEAR%>" size='3' maxlength='3' onblur='CheckYear(this)' onchange="javascript:changeCity(document.BankListfrm.HSIEN_ID, document.BankListfrm.S_YEAR, document.BankListfrm);changeOption(document.BankListfrm,'change');"><font color='#000000'>年
                    		<select id="hide1" name=S_MONTH>        						
                    		<%
                    			for (int j = 1; j <= 12; j++) {			

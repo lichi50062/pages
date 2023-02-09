@@ -106,7 +106,7 @@ function doSubmit(report_no,cnd){
                       	  <%if(Utility.getPermission(request,report_no,"P")){//Print--有列印權限時 %> 
                       	  <a href="javascript:doSubmit('<%=report_no%>','createRpt');" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image411','','images/bt_execb.gif',1)"><img src="images/bt_exec.gif" name="Image411" width="66" height="25" border="0" id="Image41"></a> 
                       	  <%}%>
-                          <a href="javascript:ResetAllData_BR('BankList'));" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image511','','images/bt_cancelb.gif',0)"><img src="images/bt_cancel.gif" name="Image511" width="66" height="25" border="0" id="Image51"></a> 
+                          <a href="javascript:ResetAllData_BR('BankList');" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image511','','images/bt_cancelb.gif',0)"><img src="images/bt_cancel.gif" name="Image511" width="66" height="25" border="0" id="Image51"></a>
                           <a href="#" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image611','','images/bt_reporthelpb.gif',1)"><img src="images/bt_reporthelp.gif" name="Image611" width="80" height="25" border="0" id="Image61"></a> 
                         </div></td>
                     </tr>
@@ -125,9 +125,9 @@ function doSubmit(report_no,cnd){
                       <td bgcolor="#E9F4E3"> 
                         <table width="750" border="0" align="center" cellpadding="0" cellspacing="0">
                           <tr class="sbody">
-                            <td><img src="images/2_icon_01.gif" width="16" height="16" align="absmiddle"><span class="mtext">查詢年月 :</span> 						  						
-                               <input type='text' name='S_YEAR' value="<%=S_YEAR%>" size='3' maxlength='3' onblur='CheckYear(this)' onchange="javascript:changeCity('CityXML', this.document.forms[0].HSIEN_ID, this.document.forms[0].S_YEAR, this.document.forms[0]);changeOption(document.forms[0],'change');"><font color='#000000'>年                             
-                          		<select id="hide1" name=S_MONTH>        						
+                            <td><img src="images/2_icon_01.gif" width="16" height="16" align="absmiddle"><span class="mtext">查詢年月 :</span>
+                                <input type='text' name='S_YEAR' value="<%=S_YEAR%>" size='3' maxlength='3' onblur='CheckYear(this)' onchange="javascript:changeCity(document.BankListfrm.HSIEN_ID, document.BankListfrm.S_YEAR, document.BankListfrm);changeOption(document.BankListfrm,'change');"><font color='#000000'>年
+                                    <select id="hide1" name=S_MONTH>
                           		<%
                           			for (int j = 1; j <= 12; j++) {			
                           			if (j < 10){%>        	
@@ -165,7 +165,7 @@ function doSubmit(report_no,cnd){
 <%
 //從session裡把勾選的金融機構代碼讀出來.放在BankListDst
 if(session.getAttribute("BankList") != null && !((String)session.getAttribute("BankList")).equals("")){ 
-   System.out.println("BR002W_BankList.BankList="+(String)session.getAttribute("BankList"));
+   System.out.println("BR004W_BankList.BankList="+(String)session.getAttribute("BankList"));
 %>
 var bnlist;
 bnlist = '<%=(String)session.getAttribute("BankList")%>';

@@ -127,9 +127,9 @@ function doSubmit(report_no,cnd){
                       <td bgcolor="#E9F4E3"> 
                         <table width="750" border="0" align="center" cellpadding="0" cellspacing="0">
                           <tr class="sbody">
-                            <td><img src="images/2_icon_01.gif" width="16" height="16" align="absmiddle"><span class="mtext">查詢年月 :</span> 						  						
-                               <input type='text' name='S_YEAR' value="<%=S_YEAR%>" size='3' maxlength='3' onblur='CheckYear(this)' onchange="javascript:changeCity(this.document.forms[0].HSIEN_ID, this.document.forms[0].S_YEAR, this.document.forms[0]);changeOption(document.forms[0],'change');"><font color='#000000'>年
-                          		<select id="hide1" name=S_MONTH>        						
+                            <td><img src="images/2_icon_01.gif" width="16" height="16" align="absmiddle"><span class="mtext">查詢年月 :</span>
+                                <input type='text' name='S_YEAR' value="<%=S_YEAR%>" size='3' maxlength='3' onblur='CheckYear(this)' onchange="javascript:changeCity(document.BankListfrm.HSIEN_ID, document.BankListfrm.S_YEAR, document.BankListfrm);changeOption(document.BankListfrm,'change');"><font color='#000000'>年
+                                    <select id="hide1" name=S_MONTH>
                           		<%
                           			for (int j = 1; j <= 12; j++) {			
                           			if (j < 10){%>        	

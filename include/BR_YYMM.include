@@ -1,7 +1,7 @@
 ﻿<!--查詢年月-->
 <tr class="sbody">
   <td><img src="images/2_icon_01.gif" width="16" height="16" align="absmiddle"><span class="mtext">查詢年月 :</span> 						  						
-     <input type='text' name='S_YEAR' value="<%=S_YEAR%>" size='3' maxlength='3' onblur='CheckYear(this)' onchange="javascript:changeCity('CityXML', this.document.forms[0].HSIEN_ID, this.document.forms[0].S_YEAR, this.document.forms[0]);changeOption(document.forms[0],'change');"><font color='#000000'>年                             
+     <input type='text' name='S_YEAR' value="<%=S_YEAR%>" size='3' maxlength='3' onblur='CheckYear(this)' onchange="javascript:changeCity(document.forms[0].HSIEN_ID, document.forms[0].S_YEAR, document.forms[0]);changeOption(document.forms[0],'change');"><font color='#000000'>年
 		<select id="hide1" name=S_MONTH>        						
 		<%
 			for (int j = 1; j <= 12; j++) {			

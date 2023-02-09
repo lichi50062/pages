@@ -126,7 +126,7 @@ function doSubmit(report_no,cnd){
                         <table width="750" border="0" align="center" cellpadding="0" cellspacing="0">
                           <tr class="sbody">
                             <td><img src="images/2_icon_01.gif" width="16" height="16" align="absmiddle"><span class="mtext">查詢年月 :</span> 						  						
-                               <input type='text' name='S_YEAR' value="<%=S_YEAR%>" size='3' maxlength='3' onblur='CheckYear(this)' onchange="javascript:changeCity(this.document.forms[0].HSIEN_ID, this.document.forms[0].S_YEAR, this.document.forms[0]);changeOption(document.forms[0],'change');"><font color='#000000'>年
+                               <input type='text' name='S_YEAR' value="<%=S_YEAR%>" size='3' maxlength='3' onblur='CheckYear(this)' onchange="javascript:changeCity(document.forms[0].HSIEN_ID, document.forms[0].S_YEAR, document.forms[0]);changeOption(document.forms[0],'change');"><font color='#000000'>年
                           		<select id="hide1" name=S_MONTH>        						
                           		<%
                           			for (int j = 1; j <= 12; j++) {			
@@ -165,7 +165,7 @@ function doSubmit(report_no,cnd){
 <%
 //從session裡把勾選的金融機構代碼讀出來.放在BankListDst
 if(session.getAttribute("BankList") != null && !((String)session.getAttribute("BankList")).equals("")){ 
-   System.out.println("BR002W_BankList.BankList="+(String)session.getAttribute("BankList"));
+   System.out.println("BR006W_BankList.BankList="+(String)session.getAttribute("BankList"));
 %>
 var bnlist;
 bnlist = '<%=(String)session.getAttribute("BankList")%>';
