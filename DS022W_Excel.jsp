@@ -59,6 +59,7 @@
     List SortList_data = null;    
 	int i = 0;
 	int j= 0;
+	int z= 0;
 	String lguser_name = ( session.getAttribute("muser_name")==null ) ? "" : (String)session.getAttribute("muser_name");
 	String report_no="1-B";	
 	try{	      	
@@ -319,18 +320,33 @@
             row = sheet.createRow( ( short )5 );//大類表頭
             int columnIdx = 2;
             for(i=0;i<btnFieldList_data.size();i++){
-               //System.out.println("["+i+"]i="+(String)((List)btnFieldList_data.get(i)).get(1));
-               //System.out.println("columnIdx="+columnIdx);
-               //設定表頭欄位
-               for(j=columnIdx;j<((List)h_column.get(((List)btnFieldList_data.get(i)).get(0))).size() + columnIdx;j++){
-                  reportUtil.createCell( wb, row, ( short )j, (String)((List)btnFieldList_data.get(i)).get(1), columnStyle );               
-               }
-               sheet.addMergedRegion( new Region( ( short )5, ( short )columnIdx,
-                                               ( short )5,
-                                               ( short )(((List)h_column.get(((List)btnFieldList_data.get(i)).get(0))).size() + columnIdx - 1)) );                                              
-               columnIdx +=  ((List)h_column.get(((List)btnFieldList_data.get(i)).get(0))).size();                                             
+
+                //大類標頭
+                String h_Title = ((List) btnFieldList_data.get(i)).get(1).toString().trim();
+
+                //設定表頭欄位
+                for(j=columnIdx;j<((List)h_column.get(((List)btnFieldList_data.get(i)).get(0))).size() + columnIdx;j++){
+                    reportUtil.createCell(wb, row, (short) j, (String) ((List) btnFieldList_data.get(i)).get(1), columnStyle);
+
+                    detail_column = (List)h_column.get(((List)btnFieldList_data.get(i)).get(0));//取出該大項的細類
+                    for(z=0 ;z<detail_column.size();z++){
+                        String detailTitle = prop_column_name.get(detail_column.get(z)).toString().trim().replace("　", "");
+                        System.out.println("~~大標題~~~"+h_Title);
+                        System.out.println("~~細項標題~~~"+detailTitle);
+                        if (h_Title.equals(detailTitle)) {
+                            sheet.addMergedRegion( new Region( ( short )5, ( short )columnIdx,
+                                    ( short )6,
+                                    ( short )(columnIdx)) );
+                            continue;
+                        }
+                    }
+                sheet.addMergedRegion( new Region( ( short )5, ( short )columnIdx,
+                            ( short )5,
+                            ( short )(columnIdx)) );
+                }
+               columnIdx +=  ((List)h_column.get(((List)btnFieldList_data.get(i)).get(0))).size();
             }
-            
+
             row = sheet.createRow( ( short ) 6);//細項表頭
             columnIdx = 2;          
             for(i=0;i<btnFieldList_data.size();i++){
@@ -340,10 +356,10 @@
                //System.out.println("detail_column="+detail_column);
                //設定細項表頭欄位
                for(j=0 ;j<detail_column.size();j++){                    
-                  //System.out.println((String)detail_column.get(j)+"="+((String)prop_column_name.get((String)detail_column.get(j)));                                           
-                  reportUtil.createCell( wb, row, ( short )columnIdx, (String)prop_column_name.get((String)detail_column.get(j)), columnStyle );               
+                  //System.out.println((String)detail_column.get(j)+"="+((String)prop_column_name.get((String)detail_column.get(j)));
+                  reportUtil.createCell( wb, row, ( short )columnIdx, (String)prop_column_name.get((String)detail_column.get(j)), columnStyle );
                   columnIdx ++;
-               }                              
+               }
             }
             row = sheet.createRow( ( short ) 7);//細項-科目代號
             columnIdx = 2;          
@@ -352,9 +368,9 @@
                //System.out.println("columnIdx="+columnIdx);
                detail_column = (List)h_column.get(((List)btnFieldList_data.get(i)).get(0));//取出該大項的細類
                //設定細項表頭欄位
-               for(j=0 ;j<detail_column.size();j++){ 
-                  //System.out.println((String)detail_column.get(j)+"="+(String)prop_column_name.get((String)detail_column.get(j)));                                           
-                  reportUtil.createCell( wb, row, ( short )columnIdx, (String)detail_column.get(j), columnStyle );               
+               for(j=0 ;j<detail_column.size();j++){
+                  //System.out.println((String)detail_column.get(j)+"="+(String)prop_column_name.get((String)detail_column.get(j)));
+                  reportUtil.createCell( wb, row, ( short )columnIdx, (String)detail_column.get(j), columnStyle );
                   columnIdx ++;
                }                              
             }
@@ -432,12 +448,12 @@
                 //if(!((String)((List)btnFieldList_data.get(i)).get(0)).equals("001000")){
                      //設定表頭欄位.把中間值的acc_code合併成一個欄位只顯示中文名稱=====================================
                      for(j=columnIdx;j<((List)h_column.get(((List)btnFieldList_data.get(i)).get(0))).size() + columnIdx;j++){
-                         reportUtil.createCell( wb, row, ( short )j, (String)((List)btnFieldList_data.get(i)).get(1), columnStyle );               
+                         reportUtil.createCell( wb, row, ( short )j, (String)((List)btnFieldList_data.get(i)).get(1), columnStyle );
                      }
                      sheet.addMergedRegion( new Region( ( short )5, ( short )columnIdx,
                                                ( short )7,
-                                               ( short )(((List)h_column.get(((List)btnFieldList_data.get(i)).get(0))).size() + columnIdx - 1)) );                                              
-                //}                               
+                                               ( short )(((List)h_column.get(((List)btnFieldList_data.get(i)).get(0))).size() + columnIdx - 1)) );
+                //}
                 columnIdx +=  ((List)h_column.get(((List)btnFieldList_data.get(i)).get(0))).size();                                                             
             }
             //設定寬度============================================================            
