@@ -1,6 +1,7 @@
 ﻿<%
 //100.07.07 create 權益證券風險─一般市場風險之資本計提計算表(國家別)(6-B2) by 2295
 //108.06.03 add 報表格式轉換 by rock.tsai
+//112.02.13 fix 可選擇項目,dbclick時無法將項目移至已選擇項目 by 6820
 %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.tradevan.util.DBManager" %>
@@ -57,7 +58,7 @@ function doSubmit(report_no,cnd){
 </head>
 
 <body leftmargin="0" topmargin="0">
-<form method=post action='#'>
+<form method=post action='#' name="RptColumnfrm">
 <table width="750" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr> 
      <td>&nbsp;</td>

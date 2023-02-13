@@ -317,35 +317,33 @@
                                                ( short )7,
                                                ( short )1) );                                                                     
                                                                                                        
-            row = sheet.createRow( ( short )5 );//大類表頭
-            int columnIdx = 2;
-            for(i=0;i<btnFieldList_data.size();i++){
+        row = sheet.createRow( ( short )5 );//大類表頭
+        int columnIdx = 2;
+        for(i=0;i<btnFieldList_data.size();i++){
 
-                //大類標頭
-                String h_Title = ((List) btnFieldList_data.get(i)).get(1).toString().trim();
+            //大類標頭
+            String h_Title = ((List) btnFieldList_data.get(i)).get(1).toString().trim();
 
-                //設定表頭欄位
-                for(j=columnIdx;j<((List)h_column.get(((List)btnFieldList_data.get(i)).get(0))).size() + columnIdx;j++){
-                    reportUtil.createCell(wb, row, (short) j, (String) ((List) btnFieldList_data.get(i)).get(1), columnStyle);
+            //設定表頭欄位
+            for(j=columnIdx;j<((List)h_column.get(((List)btnFieldList_data.get(i)).get(0))).size() + columnIdx;j++){
+                reportUtil.createCell(wb, row, (short) j, (String) ((List) btnFieldList_data.get(i)).get(1), columnStyle);
 
-                    detail_column = (List)h_column.get(((List)btnFieldList_data.get(i)).get(0));//取出該大項的細類
-                    for(z=0 ;z<detail_column.size();z++){
-                        String detailTitle = prop_column_name.get(detail_column.get(z)).toString().trim().replace("　", "");
-                        System.out.println("~~大標題~~~"+h_Title);
-                        System.out.println("~~細項標題~~~"+detailTitle);
-                        if (h_Title.equals(detailTitle)) {
-                            sheet.addMergedRegion( new Region( ( short )5, ( short )columnIdx,
-                                    ( short )6,
-                                    ( short )(columnIdx)) );
-                            continue;
-                        }
+                detail_column = (List)h_column.get(((List)btnFieldList_data.get(i)).get(0));//取出該大項的細類
+                for(int z=0 ;z<detail_column.size();z++){
+                    String detailTitle = prop_column_name.get(detail_column.get(z)).toString().trim().replace("　", "");
+                    if (h_Title.equals(detailTitle)) {
+                        sheet.addMergedRegion( new Region( ( short )5, ( short )columnIdx,
+                                ( short )6,
+                                ( short )(((List)h_column.get(((List)btnFieldList_data.get(i)).get(0))).size() + columnIdx - 1)) );
+                        continue;
                     }
-                sheet.addMergedRegion( new Region( ( short )5, ( short )columnIdx,
-                            ( short )5,
-                            ( short )(columnIdx)) );
                 }
-               columnIdx +=  ((List)h_column.get(((List)btnFieldList_data.get(i)).get(0))).size();
             }
+            sheet.addMergedRegion( new Region( ( short )5, ( short )columnIdx,
+                    ( short )5,
+                    ( short )(((List)h_column.get(((List)btnFieldList_data.get(i)).get(0))).size() + columnIdx - 1)) );
+            columnIdx +=  ((List)h_column.get(((List)btnFieldList_data.get(i)).get(0))).size();
+        }
 
             row = sheet.createRow( ( short ) 6);//細項表頭
             columnIdx = 2;          
