@@ -69,7 +69,7 @@
 			request.setAttribute("defTypes", getDefTypes());
 			request.setAttribute("frmDefItems", getFrmDefItems("" , "" , ""));
 			rd = application.getRequestDispatcher(ListPgName +"?act=List");
-		} else if("delete".equals(act)) {
+		} else if("del".equals(act)) {
 			boolean delSuc = deleteFrmDefItem(request);
 			if(delSuc) {
 				actMsg = "刪除成功";

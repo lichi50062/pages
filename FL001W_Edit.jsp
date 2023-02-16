@@ -122,7 +122,7 @@ if(permission == null){
 						<option value="30">30</option>
 						<option value="31">31</option>
 					</select>日
-					<button name='button1' onClick="popupCal('form','begYear,begMonth,begDay','BTN_date_1',event)">
+					<button name='button1' onclick="popupCal('form','begYear,begMonth,begDay','BTN_date_1',event); return false;">
 						<img align="absmiddle" border='0' name='BTN_date_1' src='images/clander.gif'>
 					</button>
 				</td>
@@ -167,9 +167,9 @@ if(permission == null){
 						</a>
 					<% } %>
 					<% if(permission != null && permission.get("D") != null && permission.get("D").equals("Y")){ %>
-						<a style="text-decoration:none" id="delLink" href="javascript:doSubmit(form,'delete');" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('delBtn','','images/bt_08b.gif',1)">
-							<img src="images/bt_08.gif" name="delBtn" width="66" height="25" border="0" id="delBtn">
-						</a>
+					<a style="text-decoration:none" id="delLink" href="javascript:doSubmit(form,'del');" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('delBtn','','images/bt_08b.gif',1)">
+						<img src="images/bt_08.gif" name="delBtn" width="66" height="25" border="0" id="delBtn">
+					</a>
 					<% } %>
 					<a style="text-decoration:none" id="cancelLink" href="javascript:doSubmit(form,'cancel');" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('cancelBtn','','images/bt_29b.gif',1)">
 						<img src="images/bt_29.gif" name="cancelBtn" width="66" height="25" border="0" id="cancelBtn">

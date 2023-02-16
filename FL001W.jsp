@@ -87,7 +87,7 @@
 			request.setAttribute("subFrmLoanItems", subFrmLoanItems);
 			request.setAttribute("detailList", getAllDetailList(subFrmLoanItems));
 			rd = application.getRequestDispatcher(SubListPgName +"?act=showDetailList");
-		} else if("delete".equals(act)) {
+		} else if("del".equals(act)) {
 			boolean updSuc = deleteFrmLoanSubitem(request);
 			if(updSuc) {
 				actMsg = "刪除成功";
@@ -317,7 +317,7 @@
 		paramList.add(Utility.getTrimString(request.getParameter("loanItem")));
 		paramList.add(Utility.getTrimString(request.getParameter("subitem")));
 		paramList.add(Utility.getTrimString(request.getParameter("startDate")));
-		
+
 		return doUpdate(sql.toString() , paramList);
 	}
 	
@@ -330,7 +330,7 @@
 		updateDBDataList.add(paramList) ;
 		updateDBSqlList.add(updateDBDataList) ;
 		updateDBList.add(updateDBSqlList) ;
-		
+
 		return DBManager.updateDB_ps(updateDBList);
 	}
 	

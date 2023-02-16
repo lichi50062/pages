@@ -55,7 +55,7 @@ function doSubmit(form , cnd){
 	return;
 }
 function checkData(form , cnd) {
-	if(cnd == "insert" || cnd == "update" || cnd == "delete") {
+	if(cnd == "insert" || cnd == "update" || cnd == "del") {
 		if(form.begYear.value == "" || form.begMonth.value == "" || form.begDay.value == "") {
 			alert("請輸入實施日期");
 			return false;

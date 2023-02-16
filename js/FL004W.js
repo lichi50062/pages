@@ -295,51 +295,40 @@ function mergeDate(yy, mm, dd) {
 
 //==================================================
 //組縣市別============
-function changeCity(xml,year) {
-	var form = document.forms[0];
-	var citySeld = form.cityType.value; //已選擇的
-	var myXML,nodeValue, nodeName,nodeYear;
-	//1.取得畫面年分 
-	//var begY = year.value=='' ? 0 : eval(year.value) ;
+function changeCity() {
+	var citySeld = document.form.cityType.value; //已選擇的
 	Myear = '100' ;//預設年分100年
-	//if(begY<=99) {
-		//Myear = '99' ;
-	//}
-	//2.讀cityXml
-	myXML = document.all(xml).XMLDocument;
-	nodeValue = myXML.getElementsByTagName("cityValue");
-	nodeName = myXML.getElementsByTagName("cityName");
-	nodeYear = myXML.getElementsByTagName("cityYear");
-	//3.移除已搬入的資料
-	var target = document.getElementById("cityType");
-	target.length = 0;
-	
+
+	var xmlDoc = $.parseXML($("xml[id=CityXML]").html()) ;
+	document.form.cityType.length = 0;
+	var data = $(xmlDoc).find("data") ;
 	var oOption = document.createElement("OPTION");
 	oOption.text="全部";
 	oOption.value="";
-	target.add(oOption);
-	
-	//4.判斷縣市年分組選單
-	for(var i=0;i<nodeName.length ;i++)	{
-		if(nodeYear.item(i).firstChild.nodeValue==Myear) {
+	document.form.cityType.add(oOption);
+
+
+	$(data).each(function (i) {
+		if($(this).find("cityyear").text()==Myear) {
 			oOption = document.createElement("OPTION");
-       	 	oOption.text=nodeName.item(i).firstChild.nodeValue;
-	        oOption.value=nodeValue.item(i).firstChild.nodeValue;  
-	        target.add(oOption);
+			oOption.text= $(this).find("cityname").text();
+			oOption.value=$(this).find("cityvalue").text();
+			document.form.cityType.add(oOption);
 		}
-	}
-	setSelect(form.cityType,citySeld);
+	})
+	;
+
+	setSelect(document.form.cityType,citySeld);
 }
 //組金融機構畫面
-function changeTbank(xml,year) {
+function changeTbank() {
+	/*111.01.17 fix
 	var form = document.forms[0];
 	var myXML,nodeValue, nodeName,nodeYear,nodeType,nodeCity;
-	//1.取得畫面年分 
-	//var begY = year.value=='' ? 0 : eval(year.value) ;
+	//1.取得畫面年分
+
 	Myear = '100' ;//預設年分100年
-	//if(begY<=99) {
-		//Myear = '99' ;
-	//}
+
 	//2.讀cityXml
 	myXML = document.all(xml).XMLDocument;
 	nodeValue = myXML.getElementsByTagName("bankValue");
@@ -361,15 +350,47 @@ function changeTbank(xml,year) {
 	target.add(oOption);
 	
 	for(var i=0;i<nodeName.length ;i++)	{
-		if((citycode==''||nodeCity.item(i).firstChild.nodeValue== citycode) 
+		if((citycode==''||nodeCity.item(i).firstChild.nodeValue== citycode)
 				&& nodeYear.item(i).firstChild.nodeValue==Myear
 				&& nodeType.item(i).firstChild.nodeValue==bankType) {
 			oOption = document.createElement("OPTION");
        	 	oOption.text=nodeName.item(i).firstChild.nodeValue;
-	        oOption.value=nodeValue.item(i).firstChild.nodeValue;  
+	        oOption.value=nodeValue.item(i).firstChild.nodeValue;
 	        target.add(oOption);
 		}
 	}
+	*/
+	var form = document.form;
+	//var myXML,nodeValue, nodeName,nodeYear,nodeType,nodeCity;
+	//1.取得畫面年分
+	var Myear = '100' ;//預設年分100年
+	//3.取得 城市代號
+	var citycode = form.cityType.value ;
+	//4.取得金融機構類別
+	var bankType = form.bankType.value ;
+
+	var xmlDoc = $.parseXML($("xml[id=TBankXML]").html()) ;
+	document.form.tbank.length = 0;
+	var data = $(xmlDoc).find("data") ;
+	var oOption = document.createElement("OPTION");
+	oOption.text="全部";
+	oOption.value="";
+	document.form.tbank.add(oOption);
+
+
+	$(data).each(function (i) {
+		if((citycode==''|| $(this).find("bankcity").text()== citycode)
+			&& $(this).find("m_year").text()==Myear
+			&& $(this).find("banktype").text()==bankType) {
+			oOption = document.createElement("OPTION");
+			oOption.text= $(this).find("bankname").text();
+			oOption.value=$(this).find("bankvalue").text();
+			document.form.tbank.add(oOption);
+		}
+	})
+	;
+
+
 }
 //缺失態樣
 function changeDefType(xml) {

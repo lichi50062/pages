@@ -58,7 +58,7 @@
 			request.setAttribute("docTypes", getDocTypes());
 			request.setAttribute("frmAuditItems", getFrmAuditItems(""));
 			rd = application.getRequestDispatcher(ListPgName +"?act=List");
-		} else if("delete".equals(act)) {
+		} else if("del".equals(act)) {
 			boolean delSuc = deleteFrmAuditItem(request);
 			if(delSuc) {
 				actMsg = "刪除成功";

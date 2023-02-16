@@ -128,7 +128,7 @@ function initEditPage() {
 			<% if(permission != null && permission.get("D") != null && permission.get("D").equals("Y")){ %>
 				<td>
 					<div align="center">
-						<a id="delLink" href="javascript:doSubmit(form,'delete');" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('delBtn','','images/bt_08b.gif',1)">
+						<a id="delLink" href="javascript:doSubmit(form,'del');" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('delBtn','','images/bt_08b.gif',1)">
 							<img src="images/bt_08.gif" name="delBtn" width="66" height="25" border="0" id="delBtn">
 						</a>
 					</div>

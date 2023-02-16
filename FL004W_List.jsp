@@ -16,6 +16,7 @@
     // 查詢條件值 
     String bankType = Utility.getTrimString(dataMap.get("bankType")) ;//農漁會別    
     String tbank = Utility.getTrimString(dataMap.get("tbank")) ;//受檢單位
+    System.out.println("tbankbanktbankbank"+tbank);
     String cityType = Utility.getTrimString(dataMap.get("cityType")) ; //縣市別
     String ex_Type = Utility.getTrimString(dataMap.get("ex_Type")) ;//查核類別
     String begDate = Utility.getTrimString(dataMap.get("begDate")) ;//訪查日期-起始
@@ -41,7 +42,7 @@
     	endSeasonY=endSeason.substring(0, 3);
     	endSeasonS=endSeason.substring(3, 5);
     }
-    
+
     List tBankList = (List)request.getAttribute("TBank");
     // XML Ducument for 總機構代碼 begin
     out.println("<xml version=\"1.0\" encoding=\"UTF-8\" ID=\"TBankXML\">");
@@ -57,7 +58,7 @@
         out.println("</data>");
     }
     out.println("</datalist>\n</xml>");
-    // XML Ducument for 總機構代碼 end 
+    // XML Ducument for 總機構代碼 end
 
     List cityList = (List)request.getAttribute("City");
 	if(cityList!=null) {
@@ -76,13 +77,14 @@
 	    out.println("</datalist>\n</xml>");
 	    // XML Ducument for 縣市別 end
     }
-       
-   
+
+
 %>
 
 <HTML>
 <HEAD>
 <TITLE>專案農貸查核情形維護作業</TITLE>
+<script language="javascript" src="js/jquery-3.5.1.min.js"></script>
 <script language="javascript" src="js/Common.js"></script>
 <script language="javascript" src="js/PopupCal.js"></script>
 <script language="javascript" src="js/FL004W.js"></script>
@@ -153,13 +155,13 @@ function MM_swapImage() { //v3.0
 <tr class="sbody">
 <td width="118" bgcolor="#BDDE9C" height="1">農漁會別</td>
 <td bgcolor="#EBF4E1" height="1">
-   <select size="1" name="bankType" onChange="changeTbank('TBankXML','')">
+   <select size="1" name="bankType" onchange="changeTbank()">
      <option value="6">農會</option>
      <option value="7">漁會</option>
   </select>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   縣市別:&nbsp;&nbsp;
-   <select size="1" name="cityType" onChange="changeTbank('TBankXML','')" >
+   <select size="1" name="cityType" onchange="changeTbank()" >
    </select>
   </td>
 </tr>
@@ -167,7 +169,7 @@ function MM_swapImage() { //v3.0
 <tr class="sbody">
 <td width="118" bgcolor="#BDDE9C" height="1">受檢單位</td>
 <td bgcolor="#EBF4E1" height="1">           
-  <select size="1" name="tbank" >
+  <select size="1" name="tbank" id="tbank">
     <option value="" >全部</option>
   </select> </td>
 </tr>
@@ -203,7 +205,7 @@ function MM_swapImage() { //v3.0
     	<%}%>
     <%}%>
     </select>日</font>
-    		<button name='button1' onClick="popupCal('form','begY,begM,begD','BTN_date_1',event)">
+    		<button name='button1' onclick="popupCal('form','begY,begM,begD','BTN_date_1',event); return false;">
 			<img align="absmiddle" border='0' name='BTN_date_1' src='images/clander.gif'>
 			</button>
              ～
@@ -231,7 +233,7 @@ function MM_swapImage() { //v3.0
     	<%}%>
     <%}%>
     </select>日</font>
-    		<button name='button2' onClick="popupCal('form','endY,endM,endD','BTN_date_2',event)">
+    		<button name='button2' onclick="popupCal('form','endY,endM,endD','BTN_date_2',event); return false;">
 			<img align="absmiddle" border='0' name='BTN_date_2' src='images/clander.gif'>
 			</button>
 </tr>        
@@ -295,23 +297,23 @@ function MM_swapImage() { //v3.0
 <script language="JavaScript" >
 <!--
 if('<%=ex_Type%>' !=''){
-	if('<%=ex_Type%>'=='FEB') form.ex_Type[0].checked=true;
-	if('<%=ex_Type%>'=='AGRI') form.ex_Type[1].checked=true;
-	if('<%=ex_Type%>'=='BOAF') form.ex_Type[2].checked=true;
+	if('<%=ex_Type%>'=='FEB') document.form.ex_Type[0].checked=true;
+	if('<%=ex_Type%>'=='AGRI') document.form.ex_Type[1].checked=true;
+	if('<%=ex_Type%>'=='BOAF') document.form.ex_Type[2].checked=true;
 	changeEx_No(form);
-	setSelect(form.begM,"<%=begM%>");
-	setSelect(form.endM,"<%=endM%>");
-	setSelect(form.begD,"<%=begD%>");
-	setSelect(form.endD,"<%=endD%>");
-	setSelect(form.cityType,"<%=cityType%>");
-	setSelect(form.begSeasonS,"<%=begSeasonS%>");
-	setSelect(form.endSeasonS,"<%=endSeasonS%>");
+	setSelect(document.form.begM,"<%=begM%>");
+	setSelect(document.form.endM,"<%=endM%>");
+	setSelect(document.form.begD,"<%=begD%>");
+	setSelect(document.form.endD,"<%=endD%>");
+	setSelect(document.form.cityType,"<%=cityType%>");
+	setSelect(document.form.begSeasonS,"<%=begSeasonS%>");
+	setSelect(document.form.endSeasonS,"<%=endSeasonS%>");
 }
-if("<%=tbank%>"!='')setSelect(form.bankType,"<%=bankType%>");
-changeCity("CityXML",'') ;
-changeTbank("TBankXML",'');
-//changeOption('TBankXML',form.tbank, form.bankType, 'TBankXML');
-setSelect(form.tbank,"<%=tbank%>");
+if("<%=tbank%>"!='')setSelect(document.form.tbank,"<%=bankType%>");
+changeCity();
+changeTbank();
+//changeOption('TBankXML',document.form.tbank, document.form.bankType, 'TBankXML');
+setSelect(document.form.tbank,"<%=tbank%>");
 
 -->
 </script>
