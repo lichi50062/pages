@@ -3,90 +3,82 @@
 //99.04.08 add 縣市別=全部/縣市別=單一縣市
 //             營運中/已裁撤選項 by 2295
 function changeTbank(xml, target, source, form) {
+	console.log('tbankl');
 	if(form.showTbank.value != 'true') return;
     var myXML,nodeType,nodeValue, nodeName,nodeCity,nodeYear;
     var oOption;    
-    var unit = form.bankType.value;
-    var m_year = form.S_YEAR.value;
-    target.length = 0;
+    var unit = document.form.bankType.value;
+    var m_year = document.form.S_YEAR.value;
+	console.log('m_year',m_year);
     if(m_year >= 100){
        m_year = 100;
     }else{
        m_year = 99;
-    }	
-    myXML = document.all(xml).XMLDocument;
-    nodeType = myXML.getElementsByTagName("bankType");//bank_type農/漁會
-    nodeCity = myXML.getElementsByTagName("bankCity");//hsien_id縣市別
-	nodeValue = myXML.getElementsByTagName("bankValue");//bank_no機構代號
-	nodeName = myXML.getElementsByTagName("bankName");//bank_no+bank_name
-	nodeYear = myXML.getElementsByTagName("bankYear");//m_year所屬年度
-	BnType = myXML.getElementsByTagName("BnType");//bn_type營運中/已裁撤
-	
-	for(var i=0;i<nodeType.length ;i++)	{
-	   if((nodeYear.item(i).firstChild.nodeValue == m_year) &&
-  	      (nodeType.item(i).firstChild.nodeValue == unit) )  {//相同年度.農/漁會  	   
+    }
+	var xmlDoc = $.parseXML($("xml[id=TBankXML]").html()) ;
+	var data = $(xmlDoc).find("data") ;
+	document.form.tbank.length = 0;
+
+
+	$(data).each(function (i) {
+	   if(($(this).find("bankYear").text() == m_year) &&
+  	      ($(this).find("bankType").text() == unit) )  {//相同年度.農/漁會
   	       //1.縣市別=全部 2.縣市別=單一縣市
-	       if(form.cityType.value == 'ALL' || (nodeCity.item(i).firstChild.nodeValue == source.value)){	
+	       if(document.form.cityType.value == 'ALL' || ($(this).find("bankCity").text() == source.value)){
 	           oOption = document.createElement("OPTION");
-	           if(form.showCancel_No.value == 'true'){//有區分營運中/已裁撤
-	       	      if(form.CANCEL_NO.value == 'N'){//營運中				
-			         if(BnType.item(i).firstChild.nodeValue != '2'){
-			            oOption.text=nodeName.item(i).firstChild.nodeValue;
-  			            oOption.value=nodeValue.item(i).firstChild.nodeValue;   	    			     
+	           if(document.form.showCancel_No.value == 'true'){//有區分營運中/已裁撤
+	       	      if(document.form.CANCEL_NO.value == 'N'){//營運中
+			         if($(this).find("BnType").text() != '2'){
+			            oOption.text=$(this).find("bankName").text();
+  			            oOption.value=$(this).find("bankValue").text();
 			         }		
 		          }else{//已裁撤		    
-		             if(BnType.item(i).firstChild.nodeValue == '2'){
-			            oOption.text=nodeName.item(i).firstChild.nodeValue;
-  			            oOption.value=nodeValue.item(i).firstChild.nodeValue;   	  
+		             if($(this).find("BnType").text() == '2'){
+			            oOption.text=$(this).find("bankName").text();
+  			            oOption.value=$(this).find("bankValue").text();
 			         }
 		          }
 		       }else{//無區分營運中/已裁撤
-		          oOption.text=nodeName.item(i).firstChild.nodeValue;
-  			      oOption.value=nodeValue.item(i).firstChild.nodeValue;  
+		          oOption.text=$(this).find("bankName").text();
+  			      oOption.value=$(this).find("bankValue").text();
 		       }
-		       target.add(oOption);
+			   document.form.tbank.add(oOption);
   	       } 
    	    }
-    }
-    
+    })
 }
 
 //99.03.09 add 根據查詢年月.改變縣市別名稱
 function changeCity(xml, target, source, form) {
-	  if(form.showCityType.value != 'true') return;
-      var myXML,nodeType,nodeValue, nodeName,nodeYear,m_year;
-      
-      m_year = source.value;
+	  if(document.form.showCityType.value != 'true') return;
+
+      var m_year = source.value;
+	console.log('m_year' + m_year);
       if(m_year >= 100){
          m_year = 100;
       }else{
          m_year = 99;
-      }	
-      
-      target.length = 0;      
-      var oOption;
-     
-      myXML = document.all(xml).XMLDocument;
-      nodeType = myXML.getElementsByTagName("cityType");//hsien_id
-      nodeYear = myXML.getElementsByTagName("cityYear");//m_year
-	  nodeValue = myXML.getElementsByTagName("cityValue");//hsien_id
-	  nodeName = myXML.getElementsByTagName("cityName");//hsien_name
-		
-	  oOption = document.createElement("OPTION");
-	  oOption.text='全部';
-  	  oOption.value='ALL';
-  	  target.add(oOption);		   
-	  	
-	  //alert('m_year='+m_year);
-	  for(var i=0;i<nodeType.length ;i++)	{	  	
-  	     if (nodeYear.item(i).firstChild.nodeValue == m_year)  {
-  		    oOption = document.createElement("OPTION");
-		    oOption.text=nodeName.item(i).firstChild.nodeValue;
-  		    oOption.value=nodeValue.item(i).firstChild.nodeValue;
-  		    target.add(oOption);
-   	     }
       }
-      form.cityType[0].selected=true;
+
+	var xmlDoc = $.parseXML($("xml[id=CityXML]").html()) ;
+	document.form.cityType.length = 0;
+	var data = $(xmlDoc).find("data") ;
+	var oOption = document.createElement("OPTION");
+	oOption.text="全部";
+	oOption.value="";
+	document.form.cityType.add(oOption);
+
+
+	$(data).each(function (i) {
+		if($(this).find("cityyear").text()==m_year) {
+			oOption = document.createElement("OPTION");
+			oOption.text= $(this).find("cityname").text();
+			oOption.value=$(this).find("cityvalue").text();
+			document.form.cityType.add(oOption);
+		}
+	})
+	;
+      document.form.cityType[0].selected=true;
       if(form.showTbank.value == 'true') changeTbank('TBankXML', form.tbank, form.cityType, form);     
 }
 

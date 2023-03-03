@@ -156,6 +156,7 @@
 <HTML>
 <HEAD>
 <TITLE>收回補貼息案件農業金庫來文維護作業</TITLE>
+<script language="javascript" src="js/jquery-3.5.1.min.js"></script>
 <script language="javascript" src="js/Common.js"></script>
 <script language="javascript" src="js/PopupCal.js"></script>
 <script language="javascript" src="js/FL007W.js"></script>
@@ -240,13 +241,13 @@ function MM_swapImage() { //v3.0
 	    	<%}%>
 	    <%}%>
 	    </select>日</font>
-	    		<button name='button1' onClick="popupCal('form','docY,docM,docD','BTN_date_1',event)">
+	    		<button name='button1' onclick="popupCal('form','docY,docM,docD','BTN_date_1',event); return false;">
 				<img align="absmiddle" border='0' name='BTN_date_1' src='images/clander.gif'>
 				</button>
 		</td>
 	</tr>   
 	<tr class="sbody">
-	       <td width="118" bgcolor="#BDDE9C" height="1">收文文號</td>
+	       <td width="118" bgcolor="#BDDE9C" height="1">收文文號1</td>
 	       <td bgcolor="#EBF4E1" height="1">
 	       <input type="text" name="ag_Rt_DocNo" value='<%=ag_Rt_DocNo %>' maxlength='10'>
 	       &nbsp;&nbsp;<font color='red'>＊</font>
@@ -278,9 +279,9 @@ function MM_swapImage() { //v3.0
 	<tr class="sbody">
 		<td width="118" bgcolor="#BDDE9C" height="1">查核類別</td>
 		<td bgcolor="#EBF4E1" height="1">
-	  		<input type='radio' name='ex_Type' id='ex_Type' value='FEB'  onClick="changeEx_Type(form,'FEB');">金管會檢查報告&nbsp;
-	  		<input type='radio' name='ex_Type' id='ex_Type' value='AGRI' onClick="changeEx_Type(form,'AGRI');">農業金庫查核&nbsp;
-	  		<input type='radio' name='ex_Type' id='ex_Type' value='BOAF' onClick="changeEx_Type(form,'BOAF');">農金局訪查&nbsp;
+	  		<input type='radio' name='ex_Type' id='ex_Type' value='FEB'  onclick="changeEx_Type(form,'FEB');">金管會檢查報告&nbsp;
+	  		<input type='radio' name='ex_Type' id='ex_Type' value='AGRI' onclick="changeEx_Type(form,'AGRI');">農業金庫查核&nbsp;
+	  		<input type='radio' name='ex_Type' id='ex_Type' value='BOAF' onclick="changeEx_Type(form,'BOAF');">農金局訪查&nbsp;
 	   	</td>
 	</tr>
 	<tr class="sbody">
@@ -365,7 +366,7 @@ function MM_swapImage() { //v3.0
 	    	<%}%>
 	    <%}%>
 	    </select>日</font>
-	    		<button name='button2' onClick="popupCal('form','payY,payM,payD','BTN_date_2',event)">
+	    		<button name='button2' onclick="popupCal('form','payY,payM,payD','BTN_date_2',event); return false">
 				<img align="absmiddle" border='0' name='BTN_date_2' src='images/clander.gif'>
 				</button>
     </td>
@@ -436,7 +437,7 @@ if('<%=act%>'=='New' ){
 	if('<%=ex_Type%>' !=''){
 		setSelect(form.cityType,"<%=cityType%>");
 		setSelect(form.bankType,"<%=bankType%>");
-		changeCity("CityXML",'') ;
+		changeCity() ;
 		changeTbank("TBankXML",'');
 		setSelect(form.tbank,"<%=bank_No%>");
 		if('<%=ex_Type%>'=='FEB') form.ex_Type[0].checked=true;

@@ -75,18 +75,19 @@ function checkData(form , cnd) {
 			alert("農業金庫基準利率加一成利率格式錯誤");
 			return false;
 		}
-		
+
 		var begYearVal = parseInt(form.begYear.value,10) + 1911;
+		console.log("begYearVal : " +begYearVal)
 		var begMonthSel = form.begMonth;
 		var begMonthVal = begMonthSel.options[begMonthSel.selectedIndex].text;
 		var begDaySel = form.begDay;
 		var begDayVal = begDaySel.options[begDaySel.selectedIndex].text;
-		
+
 		form.startDate.value = begYearVal + begMonthVal + begDayVal;
-		
-		var startDateHidden = form.startDateHidden.value;
+		console.log('form.startDate.value : '+form.startDate.value)
+		var startDateHidden = document.form.startDateHidden.value;
 		var hideYearVal = parseInt(startDateHidden.substring(0,3),10) + 1911;
-		
+
 		form.startDateHidden.value = hideYearVal + startDateHidden.substring(3,7);
 	}
 	

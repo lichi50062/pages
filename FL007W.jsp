@@ -261,8 +261,8 @@ private final static String LoginErrorPgName = "/pages/LoginError.jsp";
       String actMsg = "";
       String errMsg = "";
       String ex_Type =  Utility.getTrimString(request.getParameter("ex_Type"));
-      String ex_No =  Utility.getTrimString(request.getParameter("ex_No"));
-      String bank_No =  Utility.getTrimString(request.getParameter("tbank"));
+      String ex_No =  Utility.getTrimString(request.getParameter("ex_No"));      String bank_No =  Utility.getTrimString(request.getParameter("tbank"));
+
       String docNo = Utility.getTrimString(request.getParameter("docNo"));
       String ag_Rt_DocNo =  Utility.getTrimString(request.getParameter("ag_Rt_DocNo"));
       String ag_Rt_Doc_Date =  Utility.getTrimString(request.getParameter("ag_Rt_Doc_Date"));

@@ -227,7 +227,7 @@ function changeOption_all(form,cnd){
                                 	<%}%>
                                 <%}%>
                                 </select>日</font>
-                                		<button name='button1' onClick="popupCal('BankListfrm','S_YEAR,S_MONTH,S_DAY','BTN_date_1',event)">
+                                		<button name='button1' onclick="popupCal('BankListfrm','S_YEAR,S_MONTH,S_DAY','BTN_date_1',event); return false;" >
                             			<img align="absmiddle" border='0' name='BTN_date_1' src='images/clander.gif'>
                             			</button>
                                          ～
@@ -255,7 +255,7 @@ function changeOption_all(form,cnd){
                                 	<%}%>
                                 <%}%>
                                 </select>日</font>
-                                		<button name='button2' onClick="popupCal('BankListfrm','E_YEAR,E_MONTH,E_DAY','BTN_date_2',event)">
+                                		<button name='button2' onclick="popupCal('BankListfrm','E_YEAR,E_MONTH,E_DAY','BTN_date_2',event); return false;" >
                             			<img align="absmiddle" border='0' name='BTN_date_2' src='images/clander.gif'>
                             			</button>
                              </td>

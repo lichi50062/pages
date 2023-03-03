@@ -98,7 +98,7 @@ boolean setLandscape=true;//true:橫印
 	    out.println("</datalist>\n</xml>");
 	}
 %>
-
+<script language="javascript" src="js/jquery-3.5.1.min.js"></script>
 <script language="javascript" src="js/Common.js"></script>
 <script language="javascript" src="js/PopupCal.js"></script><!-- 日期檢核 -->
 
@@ -166,15 +166,14 @@ function doSubmit(){
     this.document.forms[0].submit();  
 }
 //組金融機構畫面
-function changeTbank(xml,year) {
+function changeTbank(xml, year) {
+	/*111.01.17 fix
 	var form = document.forms[0];
 	var myXML,nodeValue, nodeName,nodeYear,nodeType,nodeCity;
-	//1.取得畫面年分 
-	//var begY = year.value=='' ? 0 : eval(year.value) ;
+	//1.取得畫面年分changeDefCase
+
 	Myear = '100' ;//預設年分100年
-	//if(begY<=99) {
-		//Myear = '99' ;
-	//}
+
 	//2.讀cityXml
 	myXML = document.all(xml).XMLDocument;
 	nodeValue = myXML.getElementsByTagName("bankValue");
@@ -189,124 +188,139 @@ function changeTbank(xml,year) {
 	//5.移除已搬入的資料
 	var target = document.getElementById("tbank");
 	target.length = 0;
-	
-	var oOption = document.createElement("OPTION");
-	oOption.text="請選擇...";
-	oOption.value="";
-	target.add(oOption);
-	
-	for(var i=0;i<nodeName.length ;i++)	{
-		if((citycode==''||nodeCity.item(i).firstChild.nodeValue== citycode) 
-				&& nodeYear.item(i).firstChild.nodeValue==Myear
-				&& nodeType.item(i).firstChild.nodeValue==bankType) {
-			oOption = document.createElement("OPTION");
-       	 	oOption.text=nodeName.item(i).firstChild.nodeValue;
-	        oOption.value=nodeValue.item(i).firstChild.nodeValue;  
-	        target.add(oOption);
-		}
-	}
-}
-//組縣市別============
-function changeCity(xml,year) {
-	var form = document.forms[0];
-	var citySeld = form.cityType.value; //已選擇的
-	var myXML,nodeValue, nodeName,nodeYear;
-	//1.取得畫面年分 
-	//var begY = year.value=='' ? 0 : eval(year.value) ;
-	Myear = '100' ;//預設年分100年
-	//if(begY<=99) {
-		//Myear = '99' ;
-	//}
-	//2.讀cityXml
-	myXML = document.all(xml).XMLDocument;
-	nodeValue = myXML.getElementsByTagName("cityValue");
-	nodeName = myXML.getElementsByTagName("cityName");
-	nodeYear = myXML.getElementsByTagName("cityYear");
-	//3.移除已搬入的資料
-	var target = document.getElementById("cityType");
-	target.length = 0;
-	
+
 	var oOption = document.createElement("OPTION");
 	oOption.text="全部";
 	oOption.value="";
 	target.add(oOption);
-	
-	//4.判斷縣市年分組選單
+
 	for(var i=0;i<nodeName.length ;i++)	{
-		if(nodeYear.item(i).firstChild.nodeValue==Myear) {
+		if((citycode==''||nodeCity.item(i).firstChild.nodeValue== citycode)
+				&& nodeYear.item(i).firstChild.nodeValue==Myear
+				&& nodeType.item(i).firstChild.nodeValue==bankType) {
 			oOption = document.createElement("OPTION");
        	 	oOption.text=nodeName.item(i).firstChild.nodeValue;
-	        oOption.value=nodeValue.item(i).firstChild.nodeValue;  
+	        oOption.value=nodeValue.item(i).firstChild.nodeValue;
 	        target.add(oOption);
 		}
 	}
-	setSelect(form.cityType,citySeld);
+	*/
+	var form = document.form;
+	//var myXML,nodeValue, nodeName,nodeYear,nodeType,nodeCity;
+	//1.取得畫面年分
+	var Myear = '100' ;//預設年分100年
+	//3.取得 城市代號
+	var citycode = form.cityType.value ;
+	//4.取得金融機構類別
+	var bankType = form.bankType.value ;
+
+	var xmlDoc = $.parseXML($("xml[id=TBankXML]").html()) ;
+	document.form.tbank.length = 0;
+	var data = $(xmlDoc).find("data") ;
+	var oOption = document.createElement("OPTION");
+	oOption.text="全部";
+	oOption.value="";
+	document.form.tbank.add(oOption);
+
+
+	$(data).each(function (i) {
+		if((citycode==''|| $(this).find("bankcity").text()== citycode)
+			&& $(this).find("m_year").text()==Myear
+			&& $(this).find("banktype").text()==bankType) {
+			oOption = document.createElement("OPTION");
+			oOption.text= $(this).find("bankname").text();
+			oOption.value=$(this).find("bankvalue").text();
+			document.form.tbank.add(oOption);
+		}
+	})
+	;
+
+
+}
+//組縣市別============
+function changeCity() {
+	var citySeld = document.form.cityType.value; //已選擇的
+	Myear = '100' ;//預設年分100年
+
+	var xmlDoc = $.parseXML($("xml[id=CityXML]").html()) ;
+	document.form.cityType.length = 0;
+	var data = $(xmlDoc).find("data") ;
+	var oOption = document.createElement("OPTION");
+	oOption.text="全部";
+	oOption.value="";
+	document.form.cityType.add(oOption);
+
+
+	$(data).each(function (i) {
+		if($(this).find("cityyear").text()==Myear) {
+			oOption = document.createElement("OPTION");
+			oOption.text= $(this).find("cityname").text();
+			oOption.value=$(this).find("cityvalue").text();
+			document.form.cityType.add(oOption);
+		}
+	})
+	;
+
+	setSelect(document.form.cityType,citySeld);
 }
 
 <%//貸款種類%>
 function chg_query2 (xml) {
-	
-	var f = document.forms[0];
+
+	var f = document.form;
 	var tbankSel = f.tbank.value; //已選擇的
-	var myXML,nodeValue, nodeName,nodeType;
-	
+
 	//2.讀cityXml
-	myXML = document.all(xml).XMLDocument;
-	//nodeType = myXML.getElementsByTagName("ex_type");
-	nodeValue = myXML.getElementsByTagName("loan_item");
-	nodeName = myXML.getElementsByTagName("loan_item_name");
-	//nodeKey = myXML.getElementsByTagName("bank_no");
+	var xmlDoc = $.parseXML($("xml[id=VQ2_XML]").html()) ;
+	var data = $(xmlDoc).find("data") ;
+
 	//3.移除已搬入的資料
-	var target = document.getElementById("q_sel2");
-	target.length = 0;
-	
 	var oOption = document.createElement("OPTION");
-	oOption.text="請選擇..";
+	document.form.q_sel2.length = 0;
+	oOption.text="請選擇...";
 	oOption.value="";
-	target.add(oOption);
+	document.form.q_sel2.add(oOption);
 	
 	//4.
-	for(var i=0;i<nodeName.length ;i++)	{
+	for(var i=0;i<$(this).find("loan_item_name").length ;i++)	{
 		//if(nodeType.item(i).firstChild.nodeValue=="AGRI") {
 			//if(tbankSel!='' && nodeKey.item(i).firstChild.nodeValue!=tbankSel) {
 			//	continue;
 			//}
 			oOption = document.createElement("OPTION");
-       	 	oOption.text=nodeName.item(i).firstChild.nodeValue;
-	        oOption.value=nodeValue.item(i).firstChild.nodeValue;  
-	        target.add(oOption);
+			oOption.text =  $(this).find("loan_item_name").text();
+			oOption.value = $(this).find("loan_item").text();
+			document.form.q_sel2.add(oOption);
 		//}
 	}	
 }
 function chg_query3 (xml) {
-	var f = document.forms[0];
+
+	var f = document.form;
 	var tbankSel = f.tbank.value; //已選擇的
-	var myXML,nodeValue, nodeName,nodeType;
-	//
-	myXML = document.all(xml).XMLDocument;
-	//nodeType = myXML.getElementsByTagName("ex_type");
-	nodeValue = myXML.getElementsByTagName("cmuse_id");
-	nodeName = myXML.getElementsByTagName("cmuse_name");
-	//nodeKey = myXML.getElementsByTagName("bank_no");
-	//移除已搬入的資料
-	var target = document.getElementById("q_sel3");
-	target.length = 0;
-	
+
+	//2.讀cityXml
+	var xmlDoc = $.parseXML($("xml[id=VQ3_XML]").html()) ;
+	var data = $(xmlDoc).find("data") ;
+
+	//3.移除已搬入的資料
 	var oOption = document.createElement("OPTION");
+	document.form.q_sel3.length = 0;
 	oOption.text="請選擇...";
 	oOption.value="";
-	target.add(oOption);
-	
+	document.form.q_sel3.add(oOption);
+
+
 	//4.
-	for(var i=0;i<nodeName.length ;i++)	{
+	for(var i=0;i<$(this).find("cmuse_name").length ;i++)	{
 		//if(nodeType.item(i).firstChild.nodeValue=="BOAF") {
 			//if(tbankSel!='' && nodeKey.item(i).firstChild.nodeValue!=tbankSel) {
 			//	continue;
 			//}
-			oOption = document.createElement("OPTION");
-       	 	oOption.text=nodeName.item(i).firstChild.nodeValue;
-	        oOption.value=nodeValue.item(i).firstChild.nodeValue;  
-	        target.add(oOption);
+		oOption = document.createElement("OPTION");
+		oOption.text = $(this).find("cmuse_name").text();
+		oOption.value = $(this).find("cmuse_id").text();
+		document.form.q_sel3.add(oOption);
 		//}
 	}	
 }
@@ -346,7 +360,7 @@ function ctrl_view (v) {
 		c5.style.display = "" ;
 		break ;
 	}
-	
+
 }
  
 
@@ -449,7 +463,7 @@ function MM_swapImgRestore() { //v3.0
     	<% }%>
     <%}%>
     	 </select>日</font>
-    	<button name='button1' onClick="popupCal('form','begY,begM,begD','BTN_date_1',event)">
+    	<button name='button1' onclick="popupCal('form','begY,begM,begD','BTN_date_1',event); return false">
 			<img align="absmiddle" border='0' name='BTN_date_1' src='images/clander.gif'>
 		</button>
                     ～
@@ -477,7 +491,7 @@ function MM_swapImgRestore() { //v3.0
 	    	<%}%>
 	    <%}%>
     	</select>日</font>
-    	<button name='button2' onClick="popupCal('form','endY,endM,endD','BTN_date_2',event)">
+    	<button name='button2' onclick="popupCal('form','endY,endM,endD','BTN_date_2',event); return false;">
 			<img align="absmiddle" border='0' name='BTN_date_2' src='images/clander.gif'>
 		</button>
 </tr>

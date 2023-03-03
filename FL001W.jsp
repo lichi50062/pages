@@ -301,7 +301,7 @@
 		paramList.add(Utility.getTrimString(request.getSession().getAttribute("muser_name")));
 		paramList.add(Utility.getTrimString(request.getParameter("loanItem")));
 		paramList.add(Utility.getTrimString(request.getParameter("subitem")));
-		paramList.add(Utility.getTrimString(request.getParameter("startDateHidden")));
+		paramList.add(Utility.getTrimString(request.getParameter("startDate")));
 		
 		return doUpdate(sql.toString() , paramList);
 	}

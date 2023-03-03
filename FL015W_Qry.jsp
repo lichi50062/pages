@@ -142,7 +142,7 @@ function MM_swapImgRestore() { //v3.0
     	<% }%>
     <%}%>
     	 </select>日</font>
-    	<button name='button1' onClick="popupCal('form','begY,begM,begD','BTN_date_1',event)">
+    	<button name='button1' onclick="popupCal('form','begY,begM,begD','BTN_date_1',event); return false;">
 			<img align="absmiddle" border='0' name='BTN_date_1' src='images/clander.gif'>
 		</button>
                     ～
@@ -170,7 +170,7 @@ function MM_swapImgRestore() { //v3.0
 	    	<%}%>
 	    <%}%>
     	</select>日</font>
-    	<button name='button2' onClick="popupCal('form','endY,endM,endD','BTN_date_2',event)">
+    	<button name='button2' onclick="popupCal('form','endY,endM,endD','BTN_date_2',event); return false;">
 			<img align="absmiddle" border='0' name='BTN_date_2' src='images/clander.gif'>
 		</button>
 </tr>

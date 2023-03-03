@@ -325,7 +325,7 @@ function changeTbank() {
 	/*111.01.17 fix
 	var form = document.forms[0];
 	var myXML,nodeValue, nodeName,nodeYear,nodeType,nodeCity;
-	//1.取得畫面年分
+	//1.取得畫面年分changeDefCase
 
 	Myear = '100' ;//預設年分100年
 
@@ -393,59 +393,48 @@ function changeTbank() {
 
 }
 //缺失態樣
-function changeDefType(xml) {
-	var form = document.forms[0];
-	var myXML,nodeKind,nodeKindName,nodeType,nodeTypeName,nodeValue, nodeName;
+function changeDefType() {
+	var form = document.form;
+
 	//2.讀Xml
-	myXML = document.all(xml).XMLDocument;
-	nodeKind = myXML.getElementsByTagName("kind");
-	nodeKindName = myXML.getElementsByTagName("kindName");
-	nodeType = myXML.getElementsByTagName("type") ;
-	nodeTypeName = myXML.getElementsByTagName("typeName") ;
-	nodeValue = myXML.getElementsByTagName("case");
-	nodeName = myXML.getElementsByTagName("caseName");
-	
+	var xmlDoc = $.parseXML($("xml[id=CaseXML]").html());
+	var data = $(xmlDoc).find("data");
+
 	//3.取得 ex_kind
 	ex_kind = '';
-	if(form.ex_Kind[0].checked)ex_kind =form.ex_Kind[0].value;
-	if(form.ex_Kind[1].checked)ex_kind =form.ex_Kind[1].value;
-	if(form.ex_Kind[2].checked)ex_kind =form.ex_Kind[2].value;
+	if(form.ex_Kind[0].checked)
+		ex_kind =form.ex_Kind[0].value;
+	if(form.ex_Kind[1].checked)
+		ex_kind =form.ex_Kind[1].value;
+	if(form.ex_Kind[2].checked)
+		ex_kind =form.ex_Kind[2].value;
 	
-	//5.移除已搬入的資料
-	var target = document.getElementById("def_Type");
-	target.length = 0;
+	document.form.def_Type.length = 0;
 	
 	var oOption = document.createElement("OPTION");
 	oOption.text="請選擇...";
 	oOption.value="";
-	target.add(oOption);
-	
+	document.form.def_Type.add(oOption);
 	lastType = '';
-	for(var i=0;i<nodeName.length ;i++)	{
-		if((nodeKind.item(i).firstChild.nodeValue== ex_kind)
-				&& nodeType.item(i).firstChild.nodeValue != lastType){
+	$(data).each(function (i) {
+		if($(this).find("kind").text() == ex_kind &&
+			$(this).find("type").text() != lastType){
+			lastType = $(this).find("type").text();
 			oOption = document.createElement("OPTION");
-       	 	oOption.text=nodeTypeName.item(i).firstChild.nodeValue;
-	        oOption.value=nodeType.item(i).firstChild.nodeValue; 
-	        target.add(oOption);
-	        lastType = nodeType.item(i).firstChild.nodeValue;
+			oOption.text=$(this).find("typename").text();
+			oOption.value=$(this).find("type").text();
+			document.form.def_Type.add(oOption);
 		}
-	}
-	changeDefCase(xml);
+	})
+	changeDefCase();
 }
 //缺失態樣
-function changeDefCase(xml) {
-	var form = document.forms[0];
-	var myXML,nodeKind,nodeKindName,nodeType,nodeTypeName,nodeValue, nodeName;
+function changeDefCase() {
+	var form = document.form;
 	//2.讀Xml
-	myXML = document.all(xml).XMLDocument;
-	nodeKind = myXML.getElementsByTagName("kind");
-	nodeKindName = myXML.getElementsByTagName("kindName");
-	nodeType = myXML.getElementsByTagName("type") ;
-	nodeTypeName = myXML.getElementsByTagName("typeName") ;
-	nodeValue = myXML.getElementsByTagName("case");
-	nodeName = myXML.getElementsByTagName("caseName");
-	
+	var xmlDoc = $.parseXML($("xml[id=CaseXML]").html());
+	var data = $(xmlDoc).find("data");
+
 	//3.取得 ex_kind
 	ex_kind = '';
 	if(form.ex_Kind[0].checked)ex_kind =form.ex_Kind[0].value;
@@ -453,23 +442,21 @@ function changeDefCase(xml) {
 	if(form.ex_Kind[2].checked)ex_kind =form.ex_Kind[2].value;
 	def_type = form.def_Type.value;
 	//5.移除已搬入的資料
-	var target = document.getElementById("def_Case");
-	target.length = 0;
+	document.form.def_Case.length = 0;
 	
 	var oOption = document.createElement("OPTION");
 	oOption.text="請選擇...";
 	oOption.value="";
-	target.add(oOption);
-	
-	for(var i=0;i<nodeName.length ;i++)	{
-		if((nodeKind.item(i).firstChild.nodeValue == ex_kind)
-				&& (nodeType.item(i).firstChild.nodeValue == def_type)){
+	document.form.def_Case.add(oOption);
+	$(data).each(function (i) {
+		if($(this).find("kind").text() == ex_kind
+				&& $(this).find("type").text() == def_type){
 			oOption = document.createElement("OPTION");
-       	 	oOption.text=nodeName.item(i).firstChild.nodeValue;
-	        oOption.value=nodeValue.item(i).firstChild.nodeValue; 
-	        target.add(oOption);
+			oOption.text=$(this).find("casename").text();
+			oOption.value=$(this).find("case").text();
+			document.form.def_Case.add(oOption);
 		}
-	}
+	})
 }
 function changeEx_Type(form,ex_Type){
 	if(ex_Type=='FEB'){//金管會檢查報告

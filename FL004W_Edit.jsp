@@ -138,6 +138,7 @@
 <HTML>
 <HEAD>
 <TITLE>專案農貸查核情形維護作業</TITLE>
+<script language="javascript" src="js/jquery-3.5.1.min.js"></script>
 <script language="javascript" src="js/Common.js"></script>
 <script language="javascript" src="js/PopupCal.js"></script>
 <script language="javascript" src="js/FL004W.js"></script>
@@ -235,7 +236,7 @@ function MM_swapImage() { //v3.0
 	    	<%}%>
 	    <%}%>
 	    </select>日</font>
-	    		<button name='button1' onClick="popupCal('form','begY,begM,begD','BTN_date_1',event)">
+	    		<button name='button1' onclick="popupCal('form','begY,begM,begD','BTN_date_1',event); return false;">
 				<img align="absmiddle" border='0' name='BTN_date_1' src='images/clander.gif'>
 				</button>
 	            &nbsp;&nbsp;<font color='red'>＊</font>
@@ -316,10 +317,10 @@ function MM_swapImage() { //v3.0
 <tr class="sbody" >
     <td width="118" bgcolor="#BDDE9C" height="1">抽查範圍</td>
     <td bgcolor="#EBF4E1" height="1">
-		<input type='radio' name='ex_Kind' value='C' onClick="ctrEx_Kind('C');changeDefType('CaseXml');" checked>個案&nbsp;
-		<input type='radio' name='ex_Kind' value='A' onClick="ctrEx_Kind('A');changeDefType('CaseXml');">內部稽核及自行查核&nbsp;
+		<input type='radio' name='ex_Kind' value='C' onclick="ctrEx_Kind('C');changeDefType();" checked>個案&nbsp;
+		<input type='radio' name='ex_Kind' value='A' onclick="ctrEx_Kind('A');changeDefType();">內部稽核及自行查核&nbsp;
 		<div id="showEx_KindR" style="display:none">
-			<input type='radio' name='ex_Kind' value='R' onClick="ctrEx_Kind('R');changeDefType('CaseXml');">定期性報表作業&nbsp;
+			<input type='radio' name='ex_Kind' value='R' onclick="ctrEx_Kind('R');changeDefType();">定期性報表作業&nbsp;
 		</div>
 		&nbsp;&nbsp;<font color='red'>＊</font>
     </td>
@@ -357,7 +358,7 @@ function MM_swapImage() { //v3.0
 	    	<%}%>
 	    <%}%>
 	    </select>日</font>
-	    		<button name='button3' onClick="popupCal('form','loanY,loanM,loanD','BTN_date_3',event)">
+	    		<button name='button3' onclick="popupCal('form','loanY,loanM,loanD','BTN_date_3',event); return false;">
 				<img align="absmiddle" border='0' name='BTN_date_3' src='images/clander.gif'>
 				</button>
     </td>
@@ -390,7 +391,7 @@ function MM_swapImage() { //v3.0
 <tr class="sbody" id="showDefType" style="display:none">
     <td width="118" bgcolor="#BDDE9C" height="1">缺失內容</td>
     <td bgcolor="#EBF4E1" height="1">
-      <select style=" width: 150px;" name="def_Type" id="def_Type" onChange="changeDefCase('CaseXml');">
+      <select style=" width: 150px;" name="def_Type" id="def_Type" onchange="changeDefCase();">
 	  </select>
 	  &nbsp;&nbsp;&nbsp;
 	  <select style=" width: 300px;" name="def_Case" id="def_Case">
@@ -444,8 +445,8 @@ if('<%=act%>'=='New' ){
 		setSelect(form.cityType,"<%=cityType%>");
 		setSelect(form.begSeasonS,"<%=begSeasonS%>");
 		setSelect(form.bankType,"<%=bankType%>");
-		changeCity("CityXML",'') ;
-		changeTbank("TBankXML",'');
+		changeCity() ;
+		changeTbank();
 		setSelect(form.tbank,"<%=bank_No%>");
 	}
 }else{
@@ -471,10 +472,10 @@ if('<%=ex_Result%>'=='0'){
 	form.ex_Result[1].checked=true;
 }
 ctrDefType('<%=ex_Result%>');
-changeDefType('CaseXML');
-setSelect(form.def_Type,"<%=def_Type%>");
-changeDefCase('CaseXML');
-setSelect(form.def_Case,"<%=def_Case%>");
+changeDefType();
+setSelect(document.def_Type,"<%=def_Type%>");
+changeDefCase();
+setSelect(document.def_Case,"<%=def_Case%>");
 
 -->
 </script>

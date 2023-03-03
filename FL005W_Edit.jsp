@@ -150,6 +150,7 @@
 <HTML>
 <HEAD>
 <TITLE>專案農貸查核缺失發文維護作業</TITLE>
+<script language="javascript" src="js/jquery-3.5.1.min.js"></script>
 <script language="javascript" src="js/Common.js"></script>
 <script language="javascript" src="js/PopupCal.js"></script>
 <script language="javascript" src="js/FL005W.js"></script>
@@ -235,7 +236,7 @@ function MM_swapImage() { //v3.0
 	    	<%}%>
 	    <%}%>
 	    </select>日</font>
-	    		<button name='button1' onClick="popupCal('form','docY,docM,docD','BTN_date_1',event)">
+	    		<button name='button1' onclick="popupCal('form','docY,docM,docD','BTN_date_1',event); return false;">
 				<img align="absmiddle" border='0' name='BTN_date_1' src='images/clander.gif'>
 				</button>
 		</td>
@@ -323,7 +324,7 @@ function MM_swapImage() { //v3.0
     <td bgcolor="#EBF4E1" height="1">
     <%for(int i=0;i<DocTypeList.size();i++){ 
     	DataObject b =(DataObject)DocTypeList.get(i);%>
-    	<input type='radio' name='doc_Type' value='<%=b.getValue("cmuse_id") %>' onClick="ctrDetail(form);" ><%=b.getValue("cmuse_name") %>&nbsp;
+    	<input type='radio' name='doc_Type' value='<%=b.getValue("cmuse_id") %>' onclick="ctrDetail(document.form);" ><%=b.getValue("cmuse_name") %>&nbsp;
     <%} %>
 		&nbsp;&nbsp;<font color='red'>＊</font>
     </td>
@@ -333,7 +334,7 @@ function MM_swapImage() { //v3.0
     <td bgcolor="#EBF4E1" height="1">
 		<%for(int i=0;i<AuditTypeList.size();i++){ 
 	    	DataObject b =(DataObject)AuditTypeList.get(i);%>
-	    	<input type='radio' name='audit_Type' value='<%=b.getValue("cmuse_id") %>' onClick="ctrDetail(form);setDetailList('DetailXML');crtAuditIdList('AuditIdXML');" ><%=b.getValue("cmuse_name") %>&nbsp;
+	    	<input type='radio' name='audit_Type' value='<%=b.getValue("cmuse_id") %>' onclick="ctrDetail(document.form);setDetailList('DetailXML');crtAuditIdList('AuditIdXML');" ><%=b.getValue("cmuse_name") %>&nbsp;
 	    <%} %>
 	    <div id="showPointAuditType" style="display:none">
 		&nbsp;&nbsp;<font color='red'>＊</font>
@@ -396,7 +397,7 @@ function MM_swapImage() { //v3.0
 	    	<%}%>
 	    <%}%>
 	    </select>日</font>
-	    		<button name='button2' onClick="popupCal('form','limitY,limitM,limitD','BTN_date_2',event)">
+	    		<button name='button2' onclick="popupCal('form','limitY,limitM,limitD','BTN_date_2',event); return false;">
 				<img align="absmiddle" border='0' name='BTN_date_2' src='images/clander.gif'>
 				</button>
 	            
@@ -466,7 +467,7 @@ if('<%=act%>'=='New' ){
 }
 setRadio(form.doc_Type, '<%=doc_Type%>');
 setRadio(form.audit_Type, '<%=audit_Type%>');
-ctrDetail(form);
+ctrDetail(document.form);
 if('<%=doc_Type%>'=='B'){
 	setDetailList('DetailXML')
 	crtAuditIdList('AuditIdXML');

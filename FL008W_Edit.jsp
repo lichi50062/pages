@@ -146,6 +146,7 @@
 <HTML>
 <HEAD>
 <TITLE>收回補貼息案件發文至農業金庫維護作業</TITLE>
+<script language="javascript" src="js/jquery-3.5.1.min.js"></script>
 <script language="javascript" src="js/Common.js"></script>
 <script language="javascript" src="js/PopupCal.js"></script>
 <script language="javascript" src="js/FL008W.js"></script>
@@ -227,7 +228,7 @@ function MM_swapImage() { //v3.0
 	    	<%}%>
 	    <%}%>
 	    </select>日</font>
-	    		<button name='button1' onClick="popupCal('form','docY,docM,docD','BTN_date_1',event)">
+	    		<button name='button1' onclick="popupCal('form','docY,docM,docD','BTN_date_1',event); return false;">
 				<img align="absmiddle" border='0' name='BTN_date_1' src='images/clander.gif'>
 				</button>
 		</td>

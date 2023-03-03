@@ -309,51 +309,40 @@ function mergeDate(yy, mm, dd) {
 
 //==================================================
 //組縣市別============
-function changeCity(xml,year) {
-	var form = document.forms[0];
-	var citySeld = form.cityType.value; //已選擇的
-	var myXML,nodeValue, nodeName,nodeYear;
-	//1.取得畫面年分 
-	//var begY = year.value=='' ? 0 : eval(year.value) ;
+function changeCity() {
+	var citySeld = document.form.cityType.value; //已選擇的
 	Myear = '100' ;//預設年分100年
-	//if(begY<=99) {
-		//Myear = '99' ;
-	//}
-	//2.讀cityXml
-	myXML = document.all(xml).XMLDocument;
-	nodeValue = myXML.getElementsByTagName("cityValue");
-	nodeName = myXML.getElementsByTagName("cityName");
-	nodeYear = myXML.getElementsByTagName("cityYear");
-	//3.移除已搬入的資料
-	var target = document.getElementById("cityType");
-	target.length = 0;
-	
+
+	var xmlDoc = $.parseXML($("xml[id=CityXML]").html()) ;
+	document.form.cityType.length = 0;
+	var data = $(xmlDoc).find("data") ;
 	var oOption = document.createElement("OPTION");
 	oOption.text="全部";
 	oOption.value="";
-	target.add(oOption);
-	
-	//4.判斷縣市年分組選單
-	for(var i=0;i<nodeName.length ;i++)	{
-		if(nodeYear.item(i).firstChild.nodeValue==Myear) {
-			oOption = document.createElement("OPTION");
-       	 	oOption.text=nodeName.item(i).firstChild.nodeValue;
-	        oOption.value=nodeValue.item(i).firstChild.nodeValue;  
-	        target.add(oOption);
+	document.form.cityType.add(oOption);
+
+
+	$(data).each(function (i) {
+		if($(this).find("cityyear").text()==Myear) {
+			oOption = document.createElement("OPTION");``
+			oOption.text= $(this).find("cityname").text();
+			oOption.value=$(this).find("cityvalue").text();
+			document.form.cityType.add(oOption);
 		}
-	}
-	setSelect(form.cityType,citySeld);
+	})
+	;
+
+	setSelect(document.form.cityType,citySeld);
 }
 //組金融機構畫面
-function changeTbank(xml,year) {
+function changeTbank() {
+	/*111.01.17 fix
 	var form = document.forms[0];
 	var myXML,nodeValue, nodeName,nodeYear,nodeType,nodeCity;
-	//1.取得畫面年分 
-	//var begY = year.value=='' ? 0 : eval(year.value) ;
+	//1.取得畫面年分changeDefCase
+
 	Myear = '100' ;//預設年分100年
-	//if(begY<=99) {
-		//Myear = '99' ;
-	//}
+
 	//2.讀cityXml
 	myXML = document.all(xml).XMLDocument;
 	nodeValue = myXML.getElementsByTagName("bankValue");
@@ -368,22 +357,54 @@ function changeTbank(xml,year) {
 	//5.移除已搬入的資料
 	var target = document.getElementById("tbank");
 	target.length = 0;
-	
+
 	var oOption = document.createElement("OPTION");
-	oOption.text="請選擇...";
+	oOption.text="全部";
 	oOption.value="";
 	target.add(oOption);
-	
+
 	for(var i=0;i<nodeName.length ;i++)	{
-		if((citycode==''||nodeCity.item(i).firstChild.nodeValue== citycode) 
+		if((citycode==''||nodeCity.item(i).firstChild.nodeValue== citycode)
 				&& nodeYear.item(i).firstChild.nodeValue==Myear
 				&& nodeType.item(i).firstChild.nodeValue==bankType) {
 			oOption = document.createElement("OPTION");
        	 	oOption.text=nodeName.item(i).firstChild.nodeValue;
-	        oOption.value=nodeValue.item(i).firstChild.nodeValue;  
+	        oOption.value=nodeValue.item(i).firstChild.nodeValue;
 	        target.add(oOption);
 		}
 	}
+	*/
+	var form = document.form;
+	//var myXML,nodeValue, nodeName,nodeYear,nodeType,nodeCity;
+	//1.取得畫面年分
+	var Myear = '100' ;//預設年分100年
+	//3.取得 城市代號
+	var citycode = form.cityType.value ;
+	//4.取得金融機構類別
+	var bankType = form.bankType.value ;
+
+	var xmlDoc = $.parseXML($("xml[id=TBankXML]").html()) ;
+	document.form.tbank.length = 0;
+	var data = $(xmlDoc).find("data") ;
+	var oOption = document.createElement("OPTION");
+	oOption.text="全部";
+	oOption.value="";
+	document.form.tbank.add(oOption);
+
+
+	$(data).each(function (i) {
+		if((citycode==''|| $(this).find("bankcity").text()== citycode)
+			&& $(this).find("m_year").text()==Myear
+			&& $(this).find("banktype").text()==bankType) {
+			oOption = document.createElement("OPTION");
+			oOption.text= $(this).find("bankname").text();
+			oOption.value=$(this).find("bankvalue").text();
+			document.form.tbank.add(oOption);
+		}
+	})
+	;
+
+
 }
 
 function changeEx_Type(form,ex_Type){
@@ -394,117 +415,103 @@ function changeEx_Type(form,ex_Type){
 	}else if(ex_Type=='BOAF'){//農金局訪查
 		document.getElementById("ex_No_Title").innerHTML='訪查日期';
 	}
-	changeItems('ItemXML');//set option
+	changeItems();//set option
 }
-function changeItems(xml) {
-	var form = document.forms[0];
-	var myXML,nodeBank,nodeType,nodeExNo,nodeExNoList;
-	var nodeDocDate,nodeDocNo,nodeC1,nodeFineAmt;
-	//2.ItemXml
-	myXML = document.all(xml).XMLDocument;
-	nodeBank = myXML.getElementsByTagName("bank_no");
-	nodeType = myXML.getElementsByTagName("ex_type");
-	nodeExNo = myXML.getElementsByTagName("ex_no");
-	nodeExNoList = myXML.getElementsByTagName("ex_no_list");
-	nodeDocDate = myXML.getElementsByTagName("doc_date");
-	nodeDocNo = myXML.getElementsByTagName("docno");
-	nodeC1 = myXML.getElementsByTagName("audit_id_c1");
-	nodeFineAmt = myXML.getElementsByTagName("fine_amt");
-	
+function changeItems() {
+
+	var xmlDoc = $.parseXML($("xml[id=ItemXML]").html()) ;
+	document.form.ex_No.length = 0;
+	var data = $(xmlDoc).find("data") ;
+	var oOption = document.createElement("OPTION");
+	oOption.text="請選擇...";
+	oOption.value="";
+	document.form.ex_No.add(oOption);
 	//3.取得 受檢單位代號
-	var sBankNo = form.tbank.value ;
+	var sBankNo = document.form.tbank.value ;
 	//4.取得 查核類別
 	var sExType = '';
 	if("New"==form.act.value){
 		for (var i=0; i<form.ex_Type.length; i++){
-			   if (form.ex_Type[i].checked){
-				   sExType = form.ex_Type[i].value;
-				   break;
-			   }
-		}
-	}else{
-		sExType = form.ex_Type.value;
-	}
-	var sExNo = form.ex_No.value;
-	
-	var target = document.getElementById("ex_No");
-	target.length = 0;
-	var oOption = document.createElement("OPTION");
-	oOption.text="請選擇...";
-    oOption.value=""; 
-    target.add(oOption);
-	var lExNo = '';
-	for(var i=0;i<nodeExNoList.length ;i++)	{
-		if(nodeBank.item(i).firstChild.nodeValue==sBankNo
-				&& nodeType.item(i).firstChild.nodeValue==sExType
-				&& lExNo!=nodeExNo.item(i).firstChild.nodeValue) {
-			oOption = document.createElement("OPTION");
-       	 	oOption.text=nodeExNoList.item(i).firstChild.nodeValue;
-	        oOption.value=nodeExNo.item(i).firstChild.nodeValue; 
-	        lExNo = nodeExNo.item(i).firstChild.nodeValue;
-	        target.add(oOption);
-		}
-	}
-	//form.ex_No.value = sExNo;
-	changeDocSet(xml);
-}
-function changeDocSet(xml) {
-	var form = document.forms[0];
-	var myXML,nodeBank,nodeType,nodeExNo,nodeExNoList;
-	var nodeDocDate,nodeDocNo,nodeC1,nodeFineAmt;
-	//2.ItemXml
-	myXML = document.all(xml).XMLDocument;
-	nodeBank = myXML.getElementsByTagName("bank_no");
-	nodeType = myXML.getElementsByTagName("ex_type");
-	nodeExNo = myXML.getElementsByTagName("ex_no");
-	nodeExNoList = myXML.getElementsByTagName("ex_no_list");
-	nodeDocDate = myXML.getElementsByTagName("doc_date");
-	nodeDocNo = myXML.getElementsByTagName("docno");
-	nodeC1 = myXML.getElementsByTagName("audit_id_c1");
-	nodeFineAmt = myXML.getElementsByTagName("fine_amt");
-	
-	//3.取得 受檢單位代號
-	var sBankNo = form.tbank.value ;
-	//4.取得 查核類別
-	var sExType = '';
-	if("New"==form.act.value){
-		for (var i=0; i<form.ex_Type.length; i++){
-			   if (form.ex_Type[i].checked){
-				   sExType = form.ex_Type[i].value;
-				   break;
-			   }
-		}
-	}else{
-		sExType = form.ex_Type.value;
-	}
-	var sExNo = form.ex_No.value;
-	
-	form.fine_Amt.value='';
-	form.docNo.value='';
-	var target = document.getElementById("docSet");
-	target.length = 0;
-	var oOption = document.createElement("OPTION");
-	oOption.text="請選擇...";
-    oOption.value=""; 
-    target.add(oOption);
-    var lDocNo = '';
-    var lDocDate='';
-	for(var i=0;i<nodeExNoList.length ;i++)	{
-		if(nodeBank.item(i).firstChild.nodeValue==sBankNo
-				&& nodeExNo.item(i).firstChild.nodeValue==sExNo
-				&& nodeDocNo.item(i).firstChild.nodeValue!='null') {
-			if(lDocDate!=nodeDocDate.item(i).firstChild.nodeValue
-					&& lDocNo !=nodeDocNo.item(i).firstChild.nodeValue){
-				oOption = document.createElement("OPTION");
-	       	 	oOption.text="發文日期："+nodeDocDate.item(i).firstChild.nodeValue+" 發文文號："+nodeDocNo.item(i).firstChild.nodeValue;
-		        oOption.value=nodeDocDate.item(i).firstChild.nodeValue+";"+nodeDocNo.item(i).firstChild.nodeValue+";"+nodeC1.item(i).firstChild.nodeValue+";"+nodeFineAmt.item(i).firstChild.nodeValue; 
-		        target.add(oOption);
-		        lDocDate = nodeDocDate.item(i).firstChild.nodeValue;
-		        lDocNo = nodeDocNo.item(i).firstChild.nodeValue;
+			if (form.ex_Type[i].checked){
+				sExType = form.ex_Type[i].value;
+				break;
 			}
 		}
+	}else{
+		sExType = form.ex_Type.value;
 	}
+
+	var lExNo = '';
+
+	$(data).each(function (i) {
+		if($(this).find("bank_no").text()==sBankNo
+			&& $(this).find("ex_type").text()==sExType
+			&& lExNo!=$(this).find("ex_no").text()){
+
+			lExNo = $(this).find("ex_no").text();
+
+			oOption = document.createElement("OPTION");
+			oOption.text= $(this).find("ex_no_list").text();
+			oOption.value=$(this).find("ex_no").text();
+			document.form.ex_No.add(oOption);
+		}
+	})
+	;
 	//form.ex_No.value = sExNo;
+	changeDocSet(xmlDoc);
+}
+function changeDocSet(xml) {
+
+	var xmlDoc = $.parseXML($("xml[id=ItemXML]").html()) ;
+	var data = $(xmlDoc).find("data") ;
+	document.form.docSet.length = 0;
+	var form = document.form;
+
+	//3.取得 受檢單位代號
+	var sBankNo = form.tbank.value;
+	//4.取得 查核類別
+	var sExType = '';
+	if("New"==form.act.value){
+		for (var i=0; i<form.ex_Type.length; i++){
+			   if (form.ex_Type[i].checked){
+				   sExType = form.ex_Type[i].value;
+				   break;
+			   }
+		}
+	}else{
+		sExType = form.ex_Type.value;
+	}
+	var sExNo = form.ex_No.value;
+
+
+	form.fine_Amt.value='';
+	form.docNo.value='';
+	var oOption = document.createElement("OPTION");
+	oOption.text="請選擇...";
+	oOption.value="";
+	document.form.docSet.add(oOption);
+
+    var lDocNo = '';
+    var lDocDate='';
+
+	$(data).each(function (i) {
+		if($(this).find("bank_no").text()==sBankNo
+			&& $(this).find("ex_no").text()==sExNo
+			&& 'null' != $(this).find("docno").text()){
+
+			if (lDocDate != $(this).find("doc_date").text()
+			&& lDocNo != $(this).find("docno").text()) {
+
+			lDocDate = $(this).find("doc_date").text();
+			lDocNo = $(this).find("docno").text();
+			oOption = document.createElement("OPTION");
+			oOption.text = "發文日期："+lDocDate+" 發文文號："+lDocNo;
+			oOption.value = lDocDate+";" + lDocNo+";" + $(this).find("audit_id_c1").text() + ";" + $(this).find("fine_amt").text();
+			document.form.docSet.add(oOption);
+			}
+		}
+	})
+	;
 }
 function ctrDocSet(form){
 	var docno = '';

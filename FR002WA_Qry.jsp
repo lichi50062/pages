@@ -33,6 +33,7 @@
 %>
 
 <link href="css/b51.css" rel="stylesheet" type="text/css">
+<script language="javascript" src="js/jquery-3.5.1.min.js"></script>
 <script language="javascript" src="js/Common.js"></script>
 <script language="javascript" src="js/HsienIDUtil.js"></script><!-- 根據查詢年月.挑選縣市別/總機構單位-->
 <script language="javascript" event="onresize" for="window"></script>
@@ -140,7 +141,7 @@ function doSubmit(){
 <script language="JavaScript" >
 <!--
 
-changeCity('CityXML', form.cityType, form.S_YEAR, form);
+changeCity('CityXML', form.cityType, document.form.S_YEAR, form);
 
 -->
 </script>

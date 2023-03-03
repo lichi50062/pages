@@ -73,7 +73,7 @@ boolean setLandscape=true;//true:橫印
 %>
 
 <script language="javascript" src="js/Common.js"></script>
-
+<script language="javascript" src="js/jquery-3.5.1.min.js"></script>
 <link href="css/b51.css" rel="stylesheet" type="text/css">
 
 <html>
@@ -124,190 +124,156 @@ function doSubmit(){
 }
 //組金融機構畫面
 function changeTbank(xml,year) {
-	var form = document.forms[0];
-	var myXML,nodeValue, nodeName,nodeYear,nodeType,nodeCity;
-	//1.取得畫面年分 
-	//var begY = year.value=='' ? 0 : eval(year.value) ;
-	Myear = '100' ;//預設年分100年
-	//if(begY<=99) {
-		//Myear = '99' ;
-	//}
-	//2.讀cityXml
-	myXML = document.all(xml).XMLDocument;
-	nodeValue = myXML.getElementsByTagName("bankValue");
-	nodeName = myXML.getElementsByTagName("bankName");
-	nodeYear = myXML.getElementsByTagName("m_year");
-	nodeType = myXML.getElementsByTagName("bankType") ;
-	nodeCity = myXML.getElementsByTagName("bankCity") ;
+	var form = document.form;
+	//var myXML,nodeValue, nodeName,nodeYear,nodeType,nodeCity;
+	//1.取得畫面年分
+	var Myear = '100' ;//預設年分100年
 	//3.取得 城市代號
-	citycode = form.cityType.value ;
+	var citycode = form.cityType.value ;
 	//4.取得金融機構類別
-	bankType = form.bankType.value ;
-	//5.移除已搬入的資料
-	var target = document.getElementById("tbank");
-	target.length = 0;
-	
+	var bankType = form.bankType.value ;
+
+	var xmlDoc = $.parseXML($("xml[id=TBankXML]").html()) ;
+	document.form.tbank.length = 0;
+	var data = $(xmlDoc).find("data") ;
 	var oOption = document.createElement("OPTION");
-	oOption.text="請選擇...";
+	oOption.text="全部";
 	oOption.value="";
-	target.add(oOption);
-	
-	for(var i=0;i<nodeName.length ;i++)	{
-		if((citycode==''||nodeCity.item(i).firstChild.nodeValue== citycode) 
-				&& nodeYear.item(i).firstChild.nodeValue==Myear
-				&& nodeType.item(i).firstChild.nodeValue==bankType) {
+	document.form.tbank.add(oOption);
+
+	$(data).each(function (i) {
+		if((citycode==''|| $(this).find("bankcity").text()== citycode)
+				&& $(this).find("m_year").text()==Myear
+				&& $(this).find("banktype").text()==bankType) {
 			oOption = document.createElement("OPTION");
-       	 	oOption.text=nodeName.item(i).firstChild.nodeValue;
-	        oOption.value=nodeValue.item(i).firstChild.nodeValue;  
-	        target.add(oOption);
+			oOption.text= $(this).find("bankname").text();
+			oOption.value=$(this).find("bankvalue").text();
+			document.form.tbank.add(oOption);
 		}
-	}
+	})
+	;
 	chg_query1 ("VQ1_XML") ;
 	chg_query2 ("VQ1_XML") ;
 	chg_query3 ("VQ1_XML") 
 }
 //組縣市別============
 function changeCity(xml,year) {
-	var form = document.forms[0];
-	var citySeld = form.cityType.value; //已選擇的
-	var myXML,nodeValue, nodeName,nodeYear;
-	//1.取得畫面年分 
-	//var begY = year.value=='' ? 0 : eval(year.value) ;
+	var citySeld = document.form.cityType.value; //已選擇的
 	Myear = '100' ;//預設年分100年
-	//if(begY<=99) {
-		//Myear = '99' ;
-	//}
-	//2.讀cityXml
-	myXML = document.all(xml).XMLDocument;
-	nodeValue = myXML.getElementsByTagName("cityValue");
-	nodeName = myXML.getElementsByTagName("cityName");
-	nodeYear = myXML.getElementsByTagName("cityYear");
-	//3.移除已搬入的資料
-	var target = document.getElementById("cityType");
-	target.length = 0;
-	
+
+	var xmlDoc = $.parseXML($("xml[id=CityXML]").html()) ;
+	document.form.cityType.length = 0;
+	var data = $(xmlDoc).find("data") ;
 	var oOption = document.createElement("OPTION");
 	oOption.text="全部";
 	oOption.value="";
-	target.add(oOption);
-	
-	//4.判斷縣市年分組選單
-	for(var i=0;i<nodeName.length ;i++)	{
-		if(nodeYear.item(i).firstChild.nodeValue==Myear) {
+	document.form.cityType.add(oOption);
+
+
+	$(data).each(function (i) {
+		if ($(this).find("cityyear").text() == Myear) {
 			oOption = document.createElement("OPTION");
-       	 	oOption.text=nodeName.item(i).firstChild.nodeValue;
-	        oOption.value=nodeValue.item(i).firstChild.nodeValue;  
-	        target.add(oOption);
+			oOption.text = $(this).find("cityname").text();
+			oOption.value = $(this).find("cityvalue").text();
+			document.form.cityType.add(oOption);
 		}
-	}
+	});
 	setSelect(form.cityType,citySeld);
 }
 <%//檢查報告%>
 function chg_query1 (xml) {
 	
-	var f = document.forms[0];
+	var f = document.form;
 	var tbankSel = f.tbank.value; //已選擇的
-	var myXML,nodeValue, nodeName,nodeType;
-	//1.取得畫面年分 
-	//var begY = year.value=='' ? 0 : eval(year.value) ;
+	//1.取得畫面年分
 	Myear = '100' ;//預設年分100年
-	//if(begY<=99) {
-		//Myear = '99' ;
-	//}
+
 	//2.讀cityXml
-	myXML = document.all(xml).XMLDocument;
-	nodeType = myXML.getElementsByTagName("ex_type");
-	nodeValue = myXML.getElementsByTagName("ex_no");
-	nodeName = myXML.getElementsByTagName("ex_no_list");
-	nodeKey = myXML.getElementsByTagName("bank_no");
+	var xmlDoc = $.parseXML($("xml[id=VQ1_XML]").html()) ;
+	var data = $(xmlDoc).find("data") ;
+
 	//3.移除已搬入的資料
-	var target = document.getElementById("q_sel1");
-	target.length = 0;
-	
 	var oOption = document.createElement("OPTION");
+	document.form.q_sel1.length = 0;
 	oOption.text="請選擇...";
 	oOption.value="";
-	target.add(oOption);
-	
+	document.form.q_sel1.add(oOption);
+
 	//4.
-	for(var i=0;i<nodeName.length ;i++)	{
-		if(nodeType.item(i).firstChild.nodeValue=="FEB") {
-			if(nodeKey.item(i).firstChild.nodeValue!=tbankSel) {
-				continue;
+	$(data).each(function (i) {
+		if($(this).find("ex_type").text()=="FEB") {
+			if($(this).find("bank_no").text()!=tbankSel) {
+				return;
 			}
 			oOption = document.createElement("OPTION");
-       	 	oOption.text=nodeName.item(i).firstChild.nodeValue;
-	        oOption.value=nodeValue.item(i).firstChild.nodeValue;  
-	        target.add(oOption);
+			oOption.text= $(this).find("ex_no_list").text();
+			oOption.value=$(this).find("ex_no").text();
+			document.form.q_sel1.add(oOption);
 		}
-	}	
+	});
 }
 <%//查核季別%>
 function chg_query2 (xml) {
-	
-	var f = document.forms[0];
+
+	var f = document.form;
 	var tbankSel = f.tbank.value; //已選擇的
-	var myXML,nodeValue, nodeName,nodeType;
-	
+	//1.取得畫面年分
+	Myear = '100' ;//預設年分100年
+
 	//2.讀cityXml
-	myXML = document.all(xml).XMLDocument;
-	nodeType = myXML.getElementsByTagName("ex_type");
-	nodeValue = myXML.getElementsByTagName("ex_no");
-	nodeName = myXML.getElementsByTagName("ex_no_list");
-	nodeKey = myXML.getElementsByTagName("bank_no");
+	var xmlDoc = $.parseXML($("xml[id=VQ1_XML]").html()) ;
+	var data = $(xmlDoc).find("data") ;
+
 	//3.移除已搬入的資料
-	var target = document.getElementById("q_sel2");
-	target.length = 0;
-	
 	var oOption = document.createElement("OPTION");
+	document.form.q_sel2.length = 0;
 	oOption.text="請選擇...";
 	oOption.value="";
-	target.add(oOption);
-	
+	document.form.q_sel2.add(oOption);
+
 	//4.
-	for(var i=0;i<nodeName.length ;i++)	{
-		if(nodeType.item(i).firstChild.nodeValue=="AGRI") {
-			if(nodeKey.item(i).firstChild.nodeValue!=tbankSel) {
-				continue;
+	$(data).each(function (i) {
+		if($(this).find("ex_type").text()=="AGRI") {
+			if($(this).find("bank_no").text()!=tbankSel) {
+				return;
 			}
 			oOption = document.createElement("OPTION");
-       	 	oOption.text=nodeName.item(i).firstChild.nodeValue;
-	        oOption.value=nodeValue.item(i).firstChild.nodeValue;  
-	        target.add(oOption);
+			oOption.text= $(this).find("ex_no_list").text();
+			oOption.value=$(this).find("ex_no").text();
+			document.form.q_sel2.add(oOption);
 		}
-	}	
+	});
 }
 function chg_query3 (xml) {
-	var f = document.forms[0];
+
+	var f = document.form;
 	var tbankSel = f.tbank.value; //已選擇的
-	var myXML,nodeValue, nodeName,nodeType;
-	//
-	myXML = document.all(xml).XMLDocument;
-	nodeType = myXML.getElementsByTagName("ex_type");
-	nodeValue = myXML.getElementsByTagName("ex_no");
-	nodeName = myXML.getElementsByTagName("ex_no_list");
-	nodeKey = myXML.getElementsByTagName("bank_no");
-	//移除已搬入的資料
-	var target = document.getElementById("q_sel3");
-	target.length = 0;
-	
+	//1.取得畫面年分
+	Myear = '100' ;//預設年分100年
+
+	//2.讀cityXml
+	var xmlDoc = $.parseXML($("xml[id=VQ1_XML]").html()) ;
+	var data = $(xmlDoc).find("data") ;
+
+	//3.移除已搬入的資料
 	var oOption = document.createElement("OPTION");
+	document.form.q_sel3.length = 0;
 	oOption.text="請選擇...";
 	oOption.value="";
-	target.add(oOption);
-	
+	document.form.q_sel3.add(oOption);
+
 	//4.
-	for(var i=0;i<nodeName.length ;i++)	{
-		if(nodeType.item(i).firstChild.nodeValue=="BOAF") {
-			if(nodeKey.item(i).firstChild.nodeValue!=tbankSel) {
-				continue;
+	$(data).each(function (i) {
+		if($(this).find("ex_type").text()=="BOAF") {
+			if($(this).find("bank_no").text()!=tbankSel) {
+				return;
 			}
 			oOption = document.createElement("OPTION");
-       	 	oOption.text=nodeName.item(i).firstChild.nodeValue;
-	        oOption.value=nodeValue.item(i).firstChild.nodeValue;  
-	        target.add(oOption);
+			oOption.text= $(this).find("ex_no_list").text();
+			oOption.value=$(this).find("ex_no").text();
+			document.form.q_sel3.add(oOption);
 		}
-	}	
+	});
 }
 function ctrEx_No(v) {
 	var q1 = document.getElementById("vq1") ;
@@ -333,8 +299,9 @@ function ctrEx_No(v) {
 	setQuery2();
 }
 function setQuery2() {
-	var f = document.forms[0] ;
+	var f = document.form ;
 	var ex_type_obj = f.ex_Type ;
+	console.log('type' + ex_type_obj[0].value);
 	var ex_type ;
 	//get ex_type ;
 	for(i=0 ; i< ex_type_obj.length ; i++) {
@@ -450,9 +417,9 @@ function MM_swapImgRestore() { //v3.0
 <tr class="sbody">
 	<td width='15%' bgcolor="#BDDE9C" height="1">查核類別</td>
 	<td width='85%' bgcolor="#EBF4E1" height="1">
-	  <input type='radio' name='ex_Type' value='FEB'  onClick="ctrEx_No(this.value);" checked>金管會檢查報告&nbsp;
-	  <input type='radio' name='ex_Type' value='AGRI' onClick="ctrEx_No(this.value);">農業金庫查核&nbsp;
-	  <input type='radio' name='ex_Type' value='BOAF' onClick="ctrEx_No(this.value);">農金局訪查&nbsp;
+	  <input type='radio' name='ex_Type' value='FEB'  onclick="ctrEx_No(this.value);" checked>金管會檢查報告&nbsp;
+	  <input type='radio' name='ex_Type' value='AGRI' onclick="ctrEx_No(this.value);">農業金庫查核&nbsp;
+	  <input type='radio' name='ex_Type' value='BOAF' onclick="ctrEx_No(this.value);">農金局訪查&nbsp;
 		      
 	 </td>
 </tr>

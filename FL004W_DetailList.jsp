@@ -166,7 +166,7 @@ function MM_swapImage() { //v3.0
 				cnt++; %>  
 			    <tr class="sbody" bgcolor='#FFFFCC'>
 			    	  <td width="10%" height="14"><%if(cnt<10){out.print("0"+cnt);}else{out.print(cnt);}%></td>
-				      <td width="20%" height="14"><a href="#" onClick="showCase('showCase<%=cnt%>');"><%=loan_name%></a></td>          
+				      <td width="20%" height="14"><a href="#" onclick="showCase('showCase<%=cnt%>');"><%=loan_name%></a></td>
 				      <td width="10%" height="14"><%=Utility.getCHTdate(loan_date,0)%></td>
 				      <td width="30%" height="14"><%=loan_item_name%></td>
 				      <td width="10%" height="14"><%=Utility.setCommaFormat(loan_amt)%></td>

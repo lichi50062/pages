@@ -140,7 +140,7 @@ function popupCal(f, c, p, e, rowid, rowflag) {
   }
   //alert('open begin');
   //wndCal = window.open("./PopupCalendar.htm", "_blank", "width=240,height=240","true");
-  wndCal = open("./PopupCalendar.htm", "", "width=240,height=240");
+  wndCal = open("./PopupCalendar.htm", "_blank", "width=240,height=240");
   //alert('open end');
  
   var dynamicX = e.screenX;

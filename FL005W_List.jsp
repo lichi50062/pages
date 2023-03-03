@@ -94,6 +94,7 @@
 <HTML>
 <HEAD>
 <TITLE>專案農貸查核缺失發文維護作業</TITLE>
+<script language="javascript" src="js/jquery-3.5.1.min.js"></script>
 <script language="javascript" src="js/Common.js"></script>
 <script language="javascript" src="js/PopupCal.js"></script>
 <script language="javascript" src="js/FL005W.js"></script>
@@ -165,13 +166,13 @@ function MM_swapImage() { //v3.0
 <tr class="sbody">
 <td width="118" bgcolor="#BDDE9C" height="1">農漁會別</td>
 <td bgcolor="#EBF4E1" height="1">
-   <select size="1" name="bankType" onChange="changeTbank('TBankXML','')">
+   <select size="1" name="bankType" onchange="changeTbank()">
      <option value="6">農會</option>
      <option value="7">漁會</option>
   </select>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   縣市別:&nbsp;&nbsp;
-   <select size="1" name="cityType" onChange="changeTbank('TBankXML','')" >
+   <select size="1" name="cityType" onchange="changeTbank()" >
    </select>
   </td>
 </tr>
@@ -399,8 +400,8 @@ if('<%=ex_Type%>' !=''){
 	setSelect(form.endSeasonS,"<%=endSeasonS%>");
 }
 if("<%=tbank%>"!='')setSelect(form.bankType,"<%=bankType%>");
-changeCity("CityXML",'') ;
-changeTbank("TBankXML",'');
+changeCity() ;
+changeTbank();
 //changeOption('TBankXML',form.tbank, form.bankType, 'TBankXML');
 setSelect(form.tbank,"<%=tbank%>");
 setSelect(form.docBegM,"<%=docBegM%>");
